@@ -1,10 +1,25 @@
+import {
+  Activity,
+  Atom,
+  Boxes,
+  Check,
+  ChevronDown,
+  Container,
+  Factory,
+  Fuel,
+  type LucideIcon,
+  Search,
+  Ship,
+  Sun,
+  Wind,
+} from 'lucide-react'
 import { useMemo, useState } from 'react'
 import type { ResourceMeta } from '~/registry'
 
 export const meta: ResourceMeta = {
   title: 'Iconos Índices',
   description:
-    'Iconos de índice dentro del desplegable real del chart (tokens del SDK, chrome calcado del runtime). Conmuta entre el badge real (coral) y propuestas de diferenciación.',
+    'Sistema híbrido: el icono se deriva del valor. País→bandera, concepto→glifo (lucide), letras+color donde el tema se repite. Tamaños calcados del SDK real.',
   group: 'Iconos',
   status: 'review',
   surface: 'none',
@@ -13,141 +28,166 @@ export const meta: ResourceMeta = {
 // ═════════════════════════════════════════════════════════════════════════
 // Datos
 // ═════════════════════════════════════════════════════════════════════════
-type Glyph = 'nuclear' | 'solar' | 'wind'
+type FlagCode = 'de' | 'uk' | 'fr' | 'es' | 'it' | 'jp' | 'eu'
+
+type IconSpec =
+  | { kind: 'mono'; mono: string; color: string }
+  | { kind: 'flag'; flag: FlagCode }
+  | { kind: 'glyph'; Icon: LucideIcon; color: string }
 
 interface IndexItem {
   ticker: string
   code: string
   name: string
   group: string
-  /** Monograma para los estilos por color (más legible que recortar el ticker). */
-  mono: string
-  glyph?: Glyph
-  /** Color de marca para el estilo "región". */
-  color: string
+  icon: IconSpec
 }
 
 const INDICES: IndexItem[] = [
-  { ticker: 'SPX', code: 'SPX', name: 'S&P 500', group: 'Renta variable', mono: 'SPX', color: '#3d6fe0' },
-  { ticker: 'NQ', code: 'US100', name: 'Nasdaq 100', group: 'Renta variable', mono: 'NQ', color: '#6366f1' },
-  { ticker: 'DJI', code: 'INDU', name: 'Dow Jones', group: 'Renta variable', mono: 'DJI', color: '#3f73b5' },
-  { ticker: 'EU50', code: 'SX5E', name: 'Euro Stoxx 50', group: 'Renta variable', mono: 'EU', color: '#2f86c9' },
-  { ticker: 'DAX', code: 'DAX', name: 'DAX', group: 'Renta variable', mono: 'DAX', color: '#c4554d' },
-  { ticker: 'GB100', code: 'UKX', name: 'FTSE 100', group: 'Renta variable', mono: 'UK', color: '#2d5bb8' },
-  { ticker: 'FR40', code: 'CAC', name: 'CAC 40', group: 'Renta variable', mono: 'FR', color: '#4670d8' },
-  { ticker: 'ES35', code: 'IBEX', name: 'IBEX 35', group: 'Renta variable', mono: 'ES', color: '#d98a3a' },
-  { ticker: 'IT40', code: 'FTSEMIB', name: 'FTSE MIB', group: 'Renta variable', mono: 'IT', color: '#3a9e6f' },
-  { ticker: 'JP225', code: 'NKY', name: 'Nikkei 225', group: 'Renta variable', mono: 'JP', color: '#c14a44' },
-  { ticker: 'CRB', code: 'CRB', name: 'CRB Index', group: 'Materias primas', mono: 'CRB', color: '#c08a3e' },
-  { ticker: 'GSCI', code: 'GSCI', name: 'GSCI', group: 'Materias primas', mono: 'GS', color: '#b87333' },
-  { ticker: 'SSECOM', code: 'SSECC', name: 'SSECOM', group: 'Materias primas', mono: 'SSE', color: '#a9762e' },
-  { ticker: 'WCI', code: 'WCI', name: 'World Container Index', group: 'Transporte', mono: 'WCI', color: '#2f9c8e' },
-  { ticker: 'SCFI', code: 'SCFI', name: 'Shanghai Freight Index', group: 'Transporte', mono: 'SCF', color: '#2c8aa0' },
-  { ticker: 'NUCLEAR', code: 'NUCLEAR', name: 'Nuclear', group: 'Energía', mono: 'NUC', glyph: 'nuclear', color: '#5aa84f' },
-  { ticker: 'SOLAR', code: 'SOLAR', name: 'Solar', group: 'Energía', mono: 'SOL', glyph: 'solar', color: '#e0a13a' },
-  { ticker: 'WIND', code: 'WIND', name: 'Eólica', group: 'Energía', mono: 'WND', glyph: 'wind', color: '#4aa3c9' },
+  { ticker: 'SPX', code: 'SPX', name: 'S&P 500', group: 'Renta variable', icon: { kind: 'mono', mono: 'SPX', color: '#d8453d' } },
+  { ticker: 'NQ', code: 'US100', name: 'Nasdaq 100', group: 'Renta variable', icon: { kind: 'mono', mono: 'NQ', color: '#0a9cd8' } },
+  { ticker: 'DJI', code: 'INDU', name: 'Dow Jones', group: 'Renta variable', icon: { kind: 'mono', mono: 'DJI', color: '#1f4ea3' } },
+  { ticker: 'EU50', code: 'SX5E', name: 'Euro Stoxx 50', group: 'Renta variable', icon: { kind: 'flag', flag: 'eu' } },
+  { ticker: 'DAX', code: 'DAX', name: 'DAX', group: 'Renta variable', icon: { kind: 'flag', flag: 'de' } },
+  { ticker: 'GB100', code: 'UKX', name: 'FTSE 100', group: 'Renta variable', icon: { kind: 'flag', flag: 'uk' } },
+  { ticker: 'FR40', code: 'CAC', name: 'CAC 40', group: 'Renta variable', icon: { kind: 'flag', flag: 'fr' } },
+  { ticker: 'ES35', code: 'IBEX', name: 'IBEX 35', group: 'Renta variable', icon: { kind: 'flag', flag: 'es' } },
+  { ticker: 'IT40', code: 'FTSEMIB', name: 'FTSE MIB', group: 'Renta variable', icon: { kind: 'flag', flag: 'it' } },
+  { ticker: 'JP225', code: 'NKY', name: 'Nikkei 225', group: 'Renta variable', icon: { kind: 'flag', flag: 'jp' } },
+  { ticker: 'CRB', code: 'CRB', name: 'CRB Index', group: 'Materias primas', icon: { kind: 'glyph', Icon: Boxes, color: '#c0883e' } },
+  { ticker: 'GSCI', code: 'GSCI', name: 'GSCI', group: 'Materias primas', icon: { kind: 'glyph', Icon: Fuel, color: '#b07a34' } },
+  { ticker: 'SSECOM', code: 'SSECC', name: 'SSECOM', group: 'Materias primas', icon: { kind: 'glyph', Icon: Factory, color: '#a06d2c' } },
+  { ticker: 'WCI', code: 'WCI', name: 'World Container Index', group: 'Transporte', icon: { kind: 'glyph', Icon: Ship, color: '#2f9c8e' } },
+  { ticker: 'SCFI', code: 'SCFI', name: 'Shanghai Freight Index', group: 'Transporte', icon: { kind: 'glyph', Icon: Container, color: '#2c8aa0' } },
+  { ticker: 'NUCLEAR', code: 'NUCLEAR', name: 'Nuclear', group: 'Energía', icon: { kind: 'glyph', Icon: Atom, color: '#4e9e54' } },
+  { ticker: 'SOLAR', code: 'SOLAR', name: 'Solar', group: 'Energía', icon: { kind: 'glyph', Icon: Sun, color: '#e0a13a' } },
+  { ticker: 'WIND', code: 'WIND', name: 'Eólica', group: 'Energía', icon: { kind: 'glyph', Icon: Wind, color: '#4aa3c9' } },
 ]
 
 const GROUP_ORDER = ['Renta variable', 'Materias primas', 'Transporte', 'Energía']
 
-type BadgeStyle = 'real' | 'region' | 'glyph'
+// ═════════════════════════════════════════════════════════════════════════
+// Iconos chrome (lucide-react · tamaños del SDK: w-3 / w-3.5)
+// ═════════════════════════════════════════════════════════════════════════
+const IconChevron = () => <ChevronDown className="w-3 h-3 text-text-muted shrink-0" strokeWidth={2.5} />
+const IconSearch = () => <Search className="w-3.5 h-3.5 text-text-muted shrink-0" strokeWidth={2} />
+const IconCheck = () => <Check className="w-3 h-3 text-accent-orange ml-auto shrink-0" strokeWidth={3} />
+const IconLine = () => <Activity className="w-3.5 h-3.5 text-text-primary shrink-0" strokeWidth={2} />
 
 // ═════════════════════════════════════════════════════════════════════════
-// Iconos chrome del SDK
+// Glifos energía (lucide) y banderas (custom; lucide no tiene banderas)
 // ═════════════════════════════════════════════════════════════════════════
-const IconChevron = () => (
-  <svg className="w-3.5 h-3.5 text-text-muted shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.25}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-  </svg>
-)
-const IconSearch = () => (
-  <svg className="w-[18px] h-[18px] text-text-muted shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-  </svg>
-)
-const IconCheck = () => (
-  <svg className="w-4 h-4 text-accent-orange ml-auto shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-  </svg>
-)
-const IconLine = () => (
-  <svg className="w-4 h-4 text-text-primary shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M3 15l4.5-5 3.5 3L18 7l3 3" />
-  </svg>
-)
+function GlyphIcon({ Icon, s }: { Icon: LucideIcon; s: number }) {
+  return <Icon strokeWidth={2} style={{ width: s, height: s, color: '#fff' }} />
+}
 
-// ═════════════════════════════════════════════════════════════════════════
-// Glifos temáticos (energía)
-// ═════════════════════════════════════════════════════════════════════════
-function GlyphSvg({ glyph, s }: { glyph: Glyph; s: number }) {
-  const common = { width: s, height: s, viewBox: '0 0 24 24', fill: 'none' } as const
-  if (glyph === 'nuclear')
-    return (
-      <svg {...common} aria-hidden>
-        <circle cx="12" cy="12" r="2" fill="#fff" />
-        <path d="M12 10.2 9.6 6a6 6 0 0 1 4.8 0L12 10.2ZM13.5 13l4.3.9a6 6 0 0 1-2.4 4.1L13.5 13ZM10.5 13l-1.9 5a6 6 0 0 1-2.4-4.1l4.3-.9Z" fill="#fff" />
-      </svg>
-    )
-  if (glyph === 'solar')
-    return (
-      <svg {...common} aria-hidden>
-        <circle cx="12" cy="12" r="3.4" fill="#fff" />
-        <g stroke="#fff" strokeWidth="1.6" strokeLinecap="round">
-          <path d="M12 4v2.2M12 17.8V20M4 12h2.2M17.8 12H20M6.3 6.3l1.6 1.6M16.1 16.1l1.6 1.6M17.7 6.3l-1.6 1.6M7.9 16.1l-1.6 1.6" />
-        </g>
-      </svg>
-    )
-  return (
-    <svg {...common} aria-hidden>
-      <g stroke="#fff" strokeWidth="1.7" strokeLinecap="round" fill="none">
-        <path d="M4 9h10a2.4 2.4 0 1 0-2.4-2.4" />
-        <path d="M4 14h14a2.6 2.6 0 1 1-2.6 2.6" />
-      </g>
-    </svg>
-  )
+function FlagSvg({ code }: { code: FlagCode }) {
+  const box = { width: '100%', height: '100%', viewBox: '0 0 24 24', preserveAspectRatio: 'xMidYMid slice' } as const
+  switch (code) {
+    case 'de':
+      return (
+        <svg {...box}>
+          <rect width="24" height="8" fill="#111" />
+          <rect y="8" width="24" height="8" fill="#D00" />
+          <rect y="16" width="24" height="8" fill="#FFCE00" />
+        </svg>
+      )
+    case 'fr':
+      return (
+        <svg {...box}>
+          <rect width="8" height="24" fill="#002395" />
+          <rect x="8" width="8" height="24" fill="#fff" />
+          <rect x="16" width="8" height="24" fill="#ED2939" />
+        </svg>
+      )
+    case 'it':
+      return (
+        <svg {...box}>
+          <rect width="8" height="24" fill="#008C45" />
+          <rect x="8" width="8" height="24" fill="#F4F5F0" />
+          <rect x="16" width="8" height="24" fill="#CD212A" />
+        </svg>
+      )
+    case 'es':
+      return (
+        <svg {...box}>
+          <rect width="24" height="24" fill="#AA151B" />
+          <rect y="6" width="24" height="12" fill="#F1BF00" />
+        </svg>
+      )
+    case 'jp':
+      return (
+        <svg {...box}>
+          <rect width="24" height="24" fill="#fff" />
+          <circle cx="12" cy="12" r="6" fill="#BC002D" />
+        </svg>
+      )
+    case 'uk':
+      return (
+        <svg {...box}>
+          <rect width="24" height="24" fill="#012169" />
+          <path d="M0 0 24 24M24 0 0 24" stroke="#fff" strokeWidth="5" />
+          <path d="M0 0 24 24M24 0 0 24" stroke="#C8102E" strokeWidth="2" />
+          <path d="M12 0V24M0 12H24" stroke="#fff" strokeWidth="7" />
+          <path d="M12 0V24M0 12H24" stroke="#C8102E" strokeWidth="3.5" />
+        </svg>
+      )
+    case 'eu':
+      return (
+        <svg {...box}>
+          <rect width="24" height="24" fill="#003399" />
+          {Array.from({ length: 12 }).map((_, k) => {
+            const a = (k * Math.PI) / 6
+            return <circle key={k} cx={12 + 7 * Math.sin(a)} cy={12 - 7 * Math.cos(a)} r="1.05" fill="#FFCC00" />
+          })}
+        </svg>
+      )
+  }
 }
 
 // ═════════════════════════════════════════════════════════════════════════
-// El badge — ocupa el lugar del <AssetLogo>. 3 estilos a comparar.
+// Badge — ocupa el lugar del <AssetLogo> (real: 16px trigger · 20px opción)
 // ═════════════════════════════════════════════════════════════════════════
-function IndexBadge({ item, size = 26, style }: { item: IndexItem; size?: number; style: BadgeStyle }) {
-  // "real": coral sólido + 3 primeras letras del ticker (como producción)
-  const realMono = item.ticker.slice(0, 3).toUpperCase()
-  const mono = style === 'real' ? realMono : item.mono
-  const bg = style === 'real' ? 'var(--color-accent-orange-light, #f4763f)' : item.color
-  const useGlyph = style === 'glyph' && item.glyph
-  const len = mono.length
-  const fontSize = size * (len >= 3 ? 0.3 : len === 2 ? 0.38 : 0.42)
+function MonoText({ text, size }: { text: string; size: number }) {
+  const fontSize = size * (text.length >= 3 ? 0.33 : text.length === 2 ? 0.4 : 0.46)
+  return (
+    <span className="font-bold text-white leading-none" style={{ fontSize, letterSpacing: '-0.02em' }}>
+      {text}
+    </span>
+  )
+}
 
+function IndexBadge({ item, size = 20 }: { item: IndexItem; size?: number }) {
+  const ring = 'inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 1px rgba(0,0,0,0.2)'
+  const spec = item.icon
+  if (spec.kind === 'flag') {
+    return (
+      <span
+        className="relative inline-flex shrink-0 overflow-hidden rounded-full"
+        style={{ width: size, height: size, boxShadow: 'inset 0 0 0 1px rgba(0,0,0,0.25)' }}
+      >
+        <FlagSvg code={spec.flag} />
+      </span>
+    )
+  }
   return (
     <span
       className="relative inline-flex shrink-0 items-center justify-center rounded-full"
-      style={{
-        width: size,
-        height: size,
-        background: bg,
-        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 1px rgba(0,0,0,0.2)',
-      }}
+      style={{ width: size, height: size, background: spec.color, boxShadow: ring }}
     >
-      {useGlyph ? (
-        <GlyphSvg glyph={item.glyph!} s={size * 0.62} />
-      ) : (
-        <span className="font-bold text-white leading-none" style={{ fontSize, letterSpacing: '-0.02em' }}>
-          {mono}
-        </span>
-      )}
+      {spec.kind === 'glyph' ? <GlyphIcon Icon={spec.Icon} s={size * 0.58} /> : <MonoText text={spec.mono} size={size} />}
     </span>
   )
 }
 
 // ═════════════════════════════════════════════════════════════════════════
-// Pill (trigger) — bg-surface-subtle-2 rounded-full (token real del SDK)
+// Pill (trigger) — h-9 · text-[13px] (SDK: h-10 text-[13px])
 // ═════════════════════════════════════════════════════════════════════════
-function Pill({ children, maxWidth = 260 }: { children: React.ReactNode; maxWidth?: number }) {
+function Pill({ children, maxWidth = 220 }: { children: React.ReactNode; maxWidth?: number }) {
   return (
     <button
-      className="h-11 flex items-center gap-2.5 px-4 bg-surface-subtle-2 rounded-full text-[15px] text-text-primary font-medium cursor-pointer hover:bg-surface-hover transition-colors overflow-hidden"
-      style={{ maxWidth, minWidth: 90 }}
+      className="h-9 flex items-center gap-2 px-3.5 bg-surface-subtle-2 rounded-full text-[13px] text-text-primary font-medium cursor-pointer hover:bg-surface-hover transition-colors overflow-hidden"
+      style={{ maxWidth, minWidth: 80 }}
     >
       {children}
     </button>
@@ -158,24 +198,58 @@ function Pill({ children, maxWidth = 260 }: { children: React.ReactNode; maxWidt
 // Fondo de chart
 // ═════════════════════════════════════════════════════════════════════════
 function ChartBackdrop() {
-  const bars = [0, 0, 0, 220, 150, 260, 120, 180, 90, 200, 140, 240]
+  const bars = [0, 0, 0, 180, 120, 210, 100, 150, 75, 165, 115, 195]
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden text-text-primary">
       {[
-        { top: '46%', label: '6K' },
-        { top: '70%', label: '5K' },
+        { top: '48%', label: '6K' },
+        { top: '72%', label: '5K' },
       ].map((g) => (
         <div key={g.label} className="absolute right-0 left-0" style={{ top: g.top }}>
           <div className="h-px w-full bg-current opacity-[0.06]" />
-          <span className="absolute left-4 top-[-10px] font-medium text-[14px] text-current opacity-20">
-            {g.label}
-          </span>
+          <span className="absolute left-3 top-[-8px] font-medium text-[11px] text-current opacity-20">{g.label}</span>
         </div>
       ))}
-      <div className="absolute inset-x-6 bottom-0 flex items-end justify-between">
+      <div className="absolute inset-x-5 bottom-0 flex items-end justify-between">
         {bars.map((h, i) => (
-          <div key={i} className="w-10 rounded-t bg-current opacity-[0.03]" style={{ height: h }} />
+          <div key={i} className="w-8 rounded-t bg-current opacity-[0.03]" style={{ height: h }} />
         ))}
+      </div>
+    </div>
+  )
+}
+
+// ═════════════════════════════════════════════════════════════════════════
+// Catálogo de iconos (retícula cuadrada)
+// ═════════════════════════════════════════════════════════════════════════
+function IconGrid() {
+  return (
+    <div className="flickflow-sdk-root rounded-xl border border-white/[0.06] bg-navbar-bg p-6">
+      <div className="mb-5 flex items-baseline justify-between">
+        <h3 className="text-[14px] font-semibold text-text-primary">Catálogo de iconos</h3>
+        <span className="text-[11px] text-text-muted">{INDICES.length} índices</span>
+      </div>
+      <div className="space-y-5">
+        {GROUP_ORDER.map((g) => {
+          const items = INDICES.filter((i) => i.group === g)
+          return (
+            <div key={g}>
+              <div className="mb-2.5 text-[10px] font-medium uppercase tracking-wide text-text-muted">{g}</div>
+              <div className="grid grid-cols-3 gap-2.5 sm:grid-cols-4 md:grid-cols-6">
+                {items.map((item) => (
+                  <div
+                    key={item.ticker}
+                    className="flex aspect-square flex-col items-center justify-center gap-2 rounded-xl bg-surface-subtle-1 p-3 text-center"
+                  >
+                    <IndexBadge item={item} size={36} />
+                    <div className="text-[12px] font-semibold text-text-primary leading-none">{item.ticker}</div>
+                    <div className="w-full truncate text-[10px] text-text-muted leading-none">{item.name}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )
+        })}
       </div>
     </div>
   )
@@ -187,7 +261,6 @@ function ChartBackdrop() {
 export default function IconosIndices() {
   const [selected, setSelected] = useState('SPX')
   const [search, setSearch] = useState('')
-  const [style, setStyle] = useState<BadgeStyle>('real')
 
   const active = INDICES.find((i) => i.ticker === selected) ?? INDICES[0]
 
@@ -205,121 +278,99 @@ export default function IconosIndices() {
 
   return (
     <div className="space-y-4">
-      {/* Control de sandbox (no es parte del diseño) */}
-      <div className="flex items-center gap-2 text-[11px]">
-        <span className="font-mono uppercase tracking-wider text-ar-muted">Estilo de icono</span>
-        {(['real', 'region', 'glyph'] as BadgeStyle[]).map((s) => (
-          <button
-            key={s}
-            type="button"
-            onClick={() => setStyle(s)}
-            className={[
-              'rounded-md border px-2.5 py-1 transition-colors',
-              style === s
-                ? 'border-ar-line-strong bg-ar-ink text-ar-paper'
-                : 'border-ar-line text-ar-muted hover:text-ar-ink',
-            ].join(' ')}
-          >
-            {s === 'real' ? 'Real (coral)' : s === 'region' ? 'Color por región' : 'Glifos energía'}
-          </button>
-        ))}
-      </div>
-
-      {/* Chart runtime — tokens del SDK · sigue el toggle dark/light del sandbox */}
-      <div className="flickflow-sdk-root relative min-h-[640px] w-full overflow-hidden rounded-xl bg-navbar-bg">
+      {/* Chart runtime — tokens del SDK · sigue el toggle dark/light */}
+      <div className="flickflow-sdk-root relative min-h-[540px] w-full overflow-hidden rounded-xl bg-navbar-bg">
         <ChartBackdrop />
 
-        {/* Título + last values (como el screenshot) */}
-        <div className="relative flex items-center gap-3 px-7 pt-7">
-          <h2 className="text-[26px] font-semibold tracking-tight text-text-primary">Tasa de Desempleo</h2>
-          <div className="ml-2 flex items-center gap-2.5">
-            <div className="h-10 flex items-center gap-2 rounded-xl bg-surface-subtle-1 px-3.5 text-[14px]">
+        {/* Título + last values (tamaños reales: text-sm, p-2, rounded-md) */}
+        <div className="relative flex items-center gap-3 px-6 pt-6">
+          <h2 className="text-[16px] font-semibold tracking-tight text-text-primary">Tasa de Desempleo</h2>
+          <div className="ml-1 flex items-center gap-1.5">
+            <div className="inline-flex items-center gap-1 rounded-md bg-surface-subtle-2 p-2 text-[13px]">
               <span className="text-text-muted">Valor:</span>
               <span className="font-semibold text-text-primary">4.30%</span>
             </div>
-            <div className="h-10 flex items-center gap-2 rounded-xl bg-surface-subtle-1 px-3.5 text-[14px]">
+            <div className="inline-flex items-center gap-1 rounded-md bg-surface-subtle-2 p-2 text-[13px]">
               <span className="text-text-muted">Cambio %:</span>
               <span className="font-semibold text-text-primary">-0.10%</span>
             </div>
           </div>
         </div>
 
-        {/* Pills */}
-        <div className="relative mt-6 flex items-center gap-3 px-7">
-          <Pill maxWidth={150}>
+        {/* Pills + dropdown anclado al pill de asset */}
+        <div className="relative z-10 mt-5 flex items-start gap-2.5 px-6">
+          <Pill maxWidth={120}>
             <IconLine />
             <span className="truncate flex-1 text-left">Index</span>
             <IconChevron />
           </Pill>
-          <Pill maxWidth={260}>
-            <IndexBadge item={active} size={22} style={style} />
-            <span className="truncate flex-1 text-left">
-              {active.ticker} — {active.name}
-            </span>
-            <IconChevron />
-          </Pill>
-        </div>
 
-        {/* Dropdown — chrome calcado del runtime */}
-        <div className="relative mt-2 ml-[182px] w-[392px]">
-          <div className="rounded-[22px] border border-white/[0.06] bg-surface-2 shadow-[0_8px_40px_rgba(0,0,0,0.55)] backdrop-blur-2xl">
-            {/* search (sin borde inferior) */}
-            <div className="flex items-center gap-2.5 px-4 pt-4 pb-2.5">
-              <IconSearch />
-              <input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Buscar..."
-                className="flex-1 bg-transparent text-[15px] text-text-primary placeholder:text-text-muted focus:outline-none"
-              />
-            </div>
+          <div className="relative">
+            <Pill maxWidth={220}>
+              <IndexBadge item={active} size={16} />
+              <span className="truncate flex-1 text-left">
+                {active.ticker} — {active.name}
+              </span>
+              <IconChevron />
+            </Pill>
 
-            {/* lista */}
-            <div className="max-h-[440px] overflow-y-auto px-2 pb-2">
-              {filtered.length === 0 ? (
-                <div className="px-3 py-3 text-[13px] text-text-muted text-center">Sin resultados</div>
-              ) : (
-                GROUP_ORDER.filter((g) => byGroup[g]?.length).map((g) => (
-                  <div key={g}>
-                    <div className="px-3 pt-3 pb-1 text-[11px] font-medium uppercase tracking-wide text-text-muted">
-                      {g}
+            {/* Dropdown — chrome calcado del runtime, cuelga del pill */}
+            <div className="absolute top-full left-0 mt-1.5 w-[300px] rounded-[18px] border border-white/[0.06] bg-surface-2 shadow-[0_16px_44px_-16px_rgba(0,0,0,0.4),0_4px_12px_-8px_rgba(0,0,0,0.25)] backdrop-blur-2xl">
+              {/* search — icono en slot de 22px para alinear con la columna de badges */}
+              <div className="flex items-center gap-2 px-4 pt-3 pb-1.5">
+                <span className="flex w-[22px] justify-center">
+                  <IconSearch />
+                </span>
+                <input
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Buscar..."
+                  className="flex-1 bg-transparent text-[13px] text-text-primary placeholder:text-text-muted focus:outline-none"
+                />
+              </div>
+
+              {/* lista */}
+              <div className="max-h-[300px] overflow-y-auto px-1.5 pb-1.5">
+                {filtered.length === 0 ? (
+                  <div className="px-2.5 py-2 text-[12px] text-text-muted text-center">Sin resultados</div>
+                ) : (
+                  GROUP_ORDER.filter((g) => byGroup[g]?.length).map((g) => (
+                    <div key={g}>
+                      <div className="px-2.5 pt-2.5 pb-1 text-[10px] font-medium uppercase tracking-wide text-text-muted">{g}</div>
+                      {byGroup[g].map((item) => {
+                        const isSelected = item.ticker === selected
+                        return (
+                          <button
+                            key={item.ticker}
+                            onClick={() => setSelected(item.ticker)}
+                            className={[
+                              'w-full flex items-center gap-2 rounded-lg px-2.5 py-2 text-left text-[13px] transition-colors',
+                              isSelected ? 'bg-surface-subtle-2 text-text-primary' : 'text-text-primary hover:bg-surface-subtle-1',
+                            ].join(' ')}
+                            style={
+                              isSelected
+                                ? { border: '1px solid rgba(255,255,255,0.07)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06)' }
+                                : { border: '1px solid transparent' }
+                            }
+                          >
+                            <IndexBadge item={item} size={22} />
+                            <span className="truncate">
+                              {item.ticker} — {item.name}
+                            </span>
+                            {isSelected && <IconCheck />}
+                          </button>
+                        )
+                      })}
                     </div>
-                    {byGroup[g].map((item) => {
-                      const isSelected = item.ticker === selected
-                      return (
-                        <button
-                          key={item.ticker}
-                          onClick={() => setSelected(item.ticker)}
-                          className={[
-                            'w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[15px] transition-colors',
-                            isSelected
-                              ? 'bg-surface-subtle-2 text-text-primary'
-                              : 'text-text-primary hover:bg-surface-subtle-1',
-                          ].join(' ')}
-                          style={
-                            isSelected
-                              ? {
-                                  border: '1px solid rgba(255,255,255,0.07)',
-                                  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06)',
-                                }
-                              : { border: '1px solid transparent' }
-                          }
-                        >
-                          <IndexBadge item={item} size={26} style={style} />
-                          <span className="truncate">
-                            {item.ticker} — {item.name}
-                          </span>
-                          {isSelected && <IconCheck />}
-                        </button>
-                      )
-                    })}
-                  </div>
-                ))
-              )}
+                  ))
+                )}
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+      <IconGrid />
     </div>
   )
 }

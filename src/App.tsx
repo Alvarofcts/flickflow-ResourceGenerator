@@ -1,3 +1,4 @@
+import { Moon, Sun } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { resources } from './registry'
 
@@ -73,13 +74,28 @@ function TopBar({
           </>
         )}
       </div>
-      <button
-        type="button"
-        onClick={onToggleLight}
-        className="rounded-md border border-ff-border-subtle px-2.5 py-1 text-ff-text-secondary text-xs transition-colors hover:bg-ff-bg-ghost"
-      >
-        {light ? 'Light' : 'Dark'}
-      </button>
+      <div className="flex items-center gap-2">
+        <span className="w-8 text-right text-ff-text-tertiary text-xs">{light ? 'Light' : 'Dark'}</span>
+        <button
+          type="button"
+          role="switch"
+          aria-checked={light}
+          onClick={onToggleLight}
+          className="relative inline-flex h-6 w-11 shrink-0 items-center rounded-full border border-ff-border-subtle bg-ff-bg-ghost transition-colors"
+        >
+          <span
+            className={`flex size-5 items-center justify-center rounded-full bg-ff-bg-surface shadow-sm transition-transform ${
+              light ? 'translate-x-[22px]' : 'translate-x-0.5'
+            }`}
+          >
+            {light ? (
+              <Sun className="size-3 text-ff-accent-orange" strokeWidth={2} />
+            ) : (
+              <Moon className="size-3 text-ff-text-secondary" strokeWidth={2} />
+            )}
+          </span>
+        </button>
+      </div>
     </header>
   )
 }
@@ -88,13 +104,6 @@ function TopBar({
 function Home({ onOpen }: { onOpen: (id: string) => void }) {
   return (
     <div className="mx-auto max-w-6xl px-6 py-8">
-      <div className="mb-6">
-        <h1 className="font-semibold text-ff-text-primary text-xl tracking-tight">Proyectos</h1>
-        <p className="mt-1 text-ff-text-secondary text-sm">
-          Recursos de interfaz para Flickflow. Abre uno para trabajar dentro.
-        </p>
-      </div>
-
       {resources.length === 0 ? (
         <p className="text-ff-text-tertiary text-sm">
           No hay proyectos todavía. Crea{' '}
@@ -125,12 +134,15 @@ function ProjectCard({
       onClick={onOpen}
       className="group flex flex-col overflow-hidden rounded-xl border border-ff-border-subtle bg-ff-bg-surface text-left transition-all hover:border-ff-border-default hover:bg-ff-bg-elevated"
     >
-      {/* Thumbnail — render real del recurso, no interactivo */}
-      <div className="relative h-40 overflow-hidden border-ff-border-subtle border-b bg-ff-bg-base">
-        <div className="pointer-events-none absolute inset-0 origin-top-left scale-[0.75] p-4">
+      {/* Thumbnail — render real del recurso ocupando todo el ancho */}
+      <div className="relative h-48 overflow-hidden border-ff-border-subtle border-b bg-ff-bg-base">
+        <div
+          className="pointer-events-none absolute top-0 left-0 origin-top-left"
+          style={{ width: '300%', transform: 'scale(0.3333)' }}
+        >
           <Component />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-ff-bg-surface/60 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ff-bg-surface/40 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
       </div>
 
       <div className="flex flex-1 flex-col gap-1 p-4">
