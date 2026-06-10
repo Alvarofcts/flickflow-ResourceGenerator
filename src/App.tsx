@@ -23,7 +23,10 @@ function useHashRoute() {
 
 export function App() {
   const [id, go] = useHashRoute()
-  const [light, setLight] = useState(false)
+  // Por defecto, el modo configurado en el sistema/navegador; el switch lo cambia a mano.
+  const [light, setLight] = useState(
+    () => typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-color-scheme: light)').matches,
+  )
 
   useEffect(() => {
     document.documentElement.setAttribute('data-mode', light ? 'light' : 'dark')
