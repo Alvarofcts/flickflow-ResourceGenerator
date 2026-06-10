@@ -9,7 +9,8 @@
   "scripts": {
     "dev": "vite --port 5273",
     "build": "vite build",
-    "preview": "vite preview --port 5273"
+    "preview": "vite preview --port 5273",
+    "sync:ds": "bash scripts/sync-design-system.sh"
   },
   "dependencies": {
     "clsx": "2.1.1",

@@ -14,9 +14,10 @@ pnpm dev          # http://localhost:5273
 
 ## Cómo funciona
 
-- `app-src/` es un **symlink** → `../Flickflow App/flick-flow-next/src`. El alias `@/*`
-  apunta ahí, así que se importan los iconos, helpers y tokens reales de la app.
-  Si la app se mueve, recrear: `ln -sfn "../Flickflow App/flick-flow-next/src" app-src`.
+- `app-src/` es un **snapshot vendorizado** del subconjunto del design system de la app
+  (tokens, fuentes, iconos y helpers). El alias `@/*` apunta ahí. Se versiona en el repo
+  para que **Vercel/cualquier clon** pueda construir sin depender de la carpeta hermana.
+  Para refrescarlo desde la app local: `pnpm sync:ds`.
 - `src/sdk-theme.css` replica los tokens del **Chart Engine SDK** para reproducir
   menús/desplegables del chart con sus clases y valores exactos.
 - Cada recurso vive en `resources/<nombre>/preview.tsx` y se descubre automáticamente.

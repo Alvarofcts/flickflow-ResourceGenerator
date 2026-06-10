@@ -1,0 +1,1523 @@
+/* ════════════════════════════════════════════════════════════════════════
+   FLICKFLOW DESIGN SYSTEM  ·  Token Architecture v1.1
+   Naming convention: ff/{layer}/{category}/{token}
+
+   REGLA ABSOLUTA: ningún token fuera de ff_primitives puede tener
+   un valor directo. Todo es alias → primitives → semantic → component.
+
+   REGLA DE COLOR:
+     · Orange (brand)   → SOLO en áreas de gráficas (charts)
+     · Blue (brand-b)   → SOLO en calendario económico
+     · NO se mezclan NUNCA · NO se usan en UI general
+     · AI               → Gradient naranja→teal (ff-primitives-ai-*) · icono SVG gradient · bg teal sutil · border naranja sutil
+     · Interacción UI   → Neutral (botones primarios, nav activa, CTAs)
+     · Pos/Neg (Δ)      → Verde (success) / Rojo (danger)
+     · Series de chart  → Datavis lines (ff-dv-1 … ff-dv-13)
+
+   LAYERS (bottom-up):
+     1. ff_primitives  — raw values: números + paleta de color
+     2. ff_semantic    — roles contextuales (alias a primitives)
+     3. ff_component   — overrides por componente (alias a semantic/prim)
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────────────────────────────────
+   LAYER 1 · ff_primitives · NUMBERS
+   ───────────────────────────────────────────────────────────────────────── */
+:root {
+  /* space */
+  --ff-primitives-space-0: 0px;
+  --ff-primitives-space-2: 2px;
+  --ff-primitives-space-4: 4px;
+  --ff-primitives-space-6: 6px;
+  --ff-primitives-space-8: 8px;
+  --ff-primitives-space-12: 12px;
+  --ff-primitives-space-16: 16px;
+  --ff-primitives-space-20: 20px;
+  --ff-primitives-space-24: 24px;
+  --ff-primitives-space-32: 32px;
+  /* radius */
+  --ff-primitives-radius-0: 0px;
+  --ff-primitives-radius-4: 4px;
+  --ff-primitives-radius-6: 6px;
+  --ff-primitives-radius-8: 8px;
+  --ff-primitives-radius-10: 10px;
+  --ff-primitives-radius-12: 12px;
+  --ff-primitives-radius-16: 16px;
+  --ff-primitives-radius-20: 20px;
+  --ff-primitives-radius-24: 24px;
+  /* stroke */
+  --ff-primitives-stroke-1: 1px;
+  --ff-primitives-stroke-2: 2px;
+  /* elevation */
+  --ff-primitives-elevation-0: 0;
+  --ff-primitives-elevation-1: 1;
+  --ff-primitives-elevation-2: 2;
+  --ff-primitives-elevation-3: 3;
+  /* font/size */
+  --ff-primitives-font-size-12: 12px;
+  --ff-primitives-font-size-13: 13px;
+  --ff-primitives-font-size-14: 14px;
+  --ff-primitives-font-size-16: 16px;
+  --ff-primitives-font-size-18: 18px;
+  --ff-primitives-font-size-20: 20px;
+  --ff-primitives-font-size-24: 24px;
+  --ff-primitives-font-size-28: 28px;
+  /* font/line-height */
+  --ff-primitives-font-lh-16: 16px;
+  --ff-primitives-font-lh-18: 18px;
+  --ff-primitives-font-lh-20: 20px;
+  --ff-primitives-font-lh-24: 24px;
+  --ff-primitives-font-lh-28: 28px;
+  --ff-primitives-font-lh-32: 32px;
+  --ff-primitives-font-lh-36: 36px;
+  /* opacity */
+  --ff-primitives-opacity-100: 1;
+  --ff-primitives-opacity-80: 0.8;
+  --ff-primitives-opacity-60: 0.6;
+  --ff-primitives-opacity-40: 0.4;
+  --ff-primitives-opacity-20: 0.2;
+  /* type */
+  --ff-primitives-type-family-brand: "Safiro", "Inter", system-ui, -apple-system, sans-serif;
+  --ff-primitives-type-family-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --ff-primitives-type-family-mono: "JetBrains Mono", "Fira Code", monospace;
+  --ff-primitives-type-weight-regular: 400;
+  --ff-primitives-type-weight-medium: 500;
+  --ff-primitives-type-weight-semibold: 600;
+  --ff-primitives-type-tracking-tight: -0.01em;
+  --ff-primitives-type-tracking-normal: 0em;
+  --ff-primitives-type-tracking-wide: 0.02em;
+  --ff-primitives-type-tracking-wider: 0.05em;
+  /* icon */
+  --ff-primitives-icon-size-8: 8px;
+  --ff-primitives-icon-size-10: 10px;
+  --ff-primitives-icon-size-12: 12px;
+  --ff-primitives-icon-size-14: 14px;
+  --ff-primitives-icon-size-16: 16px;
+  --ff-primitives-icon-stroke-thin: 1;
+  --ff-primitives-icon-stroke-default: 1.5;
+  --ff-primitives-icon-stroke-bold: 2;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   LAYER 1 · ff_primitives · COLOR SCALES
+   ───────────────────────────────────────────────────────────────────────── */
+:root {
+  /* neutral (0=más oscuro · 12=más claro) */
+  --ff-primitives-neutral-0: #000000;
+  --ff-primitives-neutral-1: #0d0d0d;
+  --ff-primitives-neutral-2: #111111;
+  --ff-primitives-neutral-3: #161616;
+  --ff-primitives-neutral-4: #1f1f1f;
+  --ff-primitives-neutral-5: #2d2d2d;
+  --ff-primitives-neutral-6: #3d3d3d;
+  --ff-primitives-neutral-7: #5a5a5a;
+  --ff-primitives-neutral-8: #808080;
+  --ff-primitives-neutral-9: #ababab;
+  --ff-primitives-neutral-10: #c8c8c8;
+  --ff-primitives-neutral-11: #e4e1de;
+  --ff-primitives-neutral-12: #f4f4f4;
+  /* neutral/alpha */
+  --ff-primitives-neutral-a-dark-40: rgba(31, 31, 31, 0.4);
+  --ff-primitives-neutral-a-dark-70: rgba(31, 31, 31, 0.7);
+  --ff-primitives-neutral-a-white-04: rgba(255, 255, 255, 0.04);
+  --ff-primitives-neutral-a-white-08: rgba(255, 255, 255, 0.08);
+  --ff-primitives-neutral-a-white-12: rgba(255, 255, 255, 0.12);
+  --ff-primitives-neutral-a-white-20: rgba(255, 255, 255, 0.2);
+  --ff-primitives-neutral-a-white-40: rgba(255, 255, 255, 0.4);
+  --ff-primitives-neutral-a-white-70: rgba(255, 255, 255, 0.7);
+  --ff-primitives-neutral-a-grey-04: rgba(45, 45, 45, 0.04);
+  --ff-primitives-neutral-a-grey-06: rgba(45, 45, 45, 0.06);
+  --ff-primitives-neutral-a-grey-08: rgba(45, 45, 45, 0.08);
+  --ff-primitives-neutral-a-grey-10: rgba(45, 45, 45, 0.1);
+  --ff-primitives-neutral-a-grey-12: rgba(45, 45, 45, 0.12);
+  --ff-primitives-neutral-a-grey-15: rgba(45, 45, 45, 0.15);
+  --ff-primitives-neutral-a-grey-20: rgba(45, 45, 45, 0.2);
+  --ff-primitives-neutral-a-grey-25: rgba(45, 45, 45, 0.25);
+  --ff-primitives-neutral-a-text-60: rgba(228, 225, 222, 0.6);
+  --ff-primitives-neutral-a-text-40: rgba(228, 225, 222, 0.4);
+  --ff-primitives-neutral-a-text-20: rgba(228, 225, 222, 0.2);
+  --ff-primitives-neutral-a-black-60: rgba(0, 0, 0, 0.6);
+  --ff-primitives-neutral-a-black-40: rgba(0, 0, 0, 0.4);
+  --ff-primitives-neutral-a-black-25: rgba(0, 0, 0, 0.25);
+  --ff-primitives-neutral-a-black-20: rgba(0, 0, 0, 0.2);
+  --ff-primitives-neutral-a-black-15: rgba(0, 0, 0, 0.15);
+  --ff-primitives-neutral-a-black-10: rgba(0, 0, 0, 0.1);
+  --ff-primitives-neutral-a-transparent: rgba(0, 0, 0, 0);
+
+  /* brand — Orange · SOLO en gráficas/charts */
+  --ff-primitives-brand-0: #3d1a0a;
+  --ff-primitives-brand-1: #7a3218;
+  --ff-primitives-brand-2: #b04a25;
+  --ff-primitives-brand-3: #e06b37;
+  --ff-primitives-brand-4: #f4763f;
+  --ff-primitives-brand-5: #ff8b58;
+  --ff-primitives-brand-6: #ffba96;
+  --ff-primitives-brand-a-6: rgba(255, 139, 88, 0.06);
+  --ff-primitives-brand-a-12: rgba(255, 139, 88, 0.12);
+  --ff-primitives-brand-a-40: rgba(244, 118, 63, 0.4);
+
+  /* brand-b — Teal · SOLO calendario económico */
+  --ff-primitives-brand-b-0: #0d2d30;
+  --ff-primitives-brand-b-1: #1a4a50;
+  --ff-primitives-brand-b-2: #2b6b75;
+  --ff-primitives-brand-b-3: #3ba3ad;
+  --ff-primitives-brand-b-4: #4cc0ca;
+  --ff-primitives-brand-b-5: #53b5be;
+  --ff-primitives-brand-b-6: #8fd8e0;
+  --ff-primitives-brand-b-a-6: rgba(83, 181, 190, 0.06);
+  --ff-primitives-brand-b-a-12: rgba(83, 181, 190, 0.12);
+  --ff-primitives-brand-b-a-40: rgba(83, 181, 190, 0.4);
+
+  /* ai — Gradient IA (naranja→teal) · SOLO inteligencia artificial */
+  /* bg y muted → teal sutil · border → naranja sutil · icono → gradient SVG naranja→teal */
+  /* ⚠ Legacy teal primitives — NO USAR para IA. Teal = exclusivo calendario económico.
+     La identidad AI ahora usa brand (naranja). Estos tokens se mantienen por si
+     algún componente antiguo los referencia, pero la migración va a brand-b. */
+  --ff-primitives-ai-0: #071a1c;
+  --ff-primitives-ai-1: #0d2d30;
+  --ff-primitives-ai-2: #2b6b75;
+  --ff-primitives-ai-3: #4cc0ca;
+  --ff-primitives-ai-4: #53b5be;
+  --ff-primitives-ai-5: #8fd8e0;
+  --ff-primitives-ai-a-06: rgba(83, 181, 190, 0.06);
+  --ff-primitives-ai-a-12: rgba(83, 181, 190, 0.12);
+  --ff-primitives-ai-border-a-15: rgba(244, 118, 63, 0.15);
+
+  /* success — Green · Positivo/Bull */
+  --ff-primitives-success-0: #0a1f0f;
+  --ff-primitives-success-1: #122a18;
+  --ff-primitives-success-2: #245f47;
+  --ff-primitives-success-3: #389669;
+  --ff-primitives-success-4: #54cb76;
+  --ff-primitives-success-5: #59d097;
+  --ff-primitives-success-6: #47f99a;
+  --ff-primitives-success-a-12: rgba(0, 255, 73, 0.12);
+  --ff-primitives-success-a-20: rgba(0, 255, 73, 0.2);
+
+  /* warning — Amber · Alerta */
+  --ff-primitives-warning-0: #2e2000;
+  --ff-primitives-warning-1: #4d3500;
+  --ff-primitives-warning-2: #7a5500;
+  --ff-primitives-warning-3: #b08000;
+  --ff-primitives-warning-4: #fdc700;
+  --ff-primitives-warning-5: #ffbc00;
+  --ff-primitives-warning-6: #ffd966;
+  --ff-primitives-warning-a-12: rgba(255, 188, 0, 0.12);
+  --ff-primitives-warning-a-20: rgba(255, 188, 0, 0.2);
+
+  /* danger — Red · Negativo/Bear */
+  --ff-primitives-danger-0: #1a0000;
+  --ff-primitives-danger-1: #3d0005;
+  --ff-primitives-danger-2: #64302f;
+  --ff-primitives-danger-3: #802120;
+  --ff-primitives-danger-4: #a10008;
+  --ff-primitives-danger-5: #be3937;
+  --ff-primitives-danger-6: #e11c26;
+  --ff-primitives-danger-7: #ff4d4a;
+  --ff-primitives-danger-a-12: rgba(228, 0, 11, 0.12);
+  --ff-primitives-danger-a-20: rgba(228, 0, 11, 0.2);
+
+  /* datavis/lines — 13 series · SOLO series de gráficas */
+  --ff-primitives-dv-line-1: #c7542f;
+  --ff-primitives-dv-line-2: #213544;
+  --ff-primitives-dv-line-3: #bb7754;
+  --ff-primitives-dv-line-4: #406969;
+  --ff-primitives-dv-line-5: #f4bb92;
+  --ff-primitives-dv-line-6: #80a3a1;
+  --ff-primitives-dv-line-7: #8fa968;
+  --ff-primitives-dv-line-8: #5a7f5c;
+  --ff-primitives-dv-line-9: #e8b44c;
+  --ff-primitives-dv-line-10: #8b5f7d;
+  --ff-primitives-dv-line-11: #b85f6f;
+  --ff-primitives-dv-line-12: #4a7ba7;
+  --ff-primitives-dv-line-13: #8090a3;
+
+  /* datavis/heatmap */
+  --ff-primitives-dv-heat-pos-100: #47f99a;
+  --ff-primitives-dv-heat-pos-75: #59d097;
+  --ff-primitives-dv-heat-pos-50: #389669;
+  --ff-primitives-dv-heat-pos-25: #245f47;
+  --ff-primitives-dv-heat-neu-0: #3d3d3d;
+  --ff-primitives-dv-heat-neg-25: #64302f;
+  --ff-primitives-dv-heat-neg-50: #802120;
+  --ff-primitives-dv-heat-neg-75: #be3937;
+  --ff-primitives-dv-heat-neg-100: #ff4d4a;
+  --ff-primitives-dv-heat-base: #213544;
+
+  /* datavis/heatmap-light — paleta específica para fondo claro (Figma spec) */
+  --ff-primitives-dv-heat-pos-100-light: #389669; /* green oscuro — mayor contraste sobre blanco */
+  --ff-primitives-dv-heat-pos-75-light: #59d097; /* igual que dark — válido ambos modos */
+  --ff-primitives-dv-heat-pos-50-light: #b7f1d2; /* mint claro */
+  --ff-primitives-dv-heat-pos-25-light: #d9f9e6; /* mint muy claro */
+  --ff-primitives-dv-heat-neu-light: #e9e9e9; /* gris claro neutro */
+  --ff-primitives-dv-heat-neg-25-light: #ffd5d4; /* rosa claro */
+  --ff-primitives-dv-heat-neg-50-light: #ff9291; /* salmón */
+  --ff-primitives-dv-heat-neg-75-light: #ff5f5c; /* rojo medio */
+  --ff-primitives-dv-heat-neg-100-light: #c2201e; /* rojo oscuro — mayor contraste */
+  --ff-primitives-dv-heat-base-light: #ffffff; /* base blanca en light */
+
+  /* neutral — añade blanco puro como primitivo para uso en light */
+  --ff-primitives-neutral-white: #ffffff;
+
+  /* Legacy --ff-p-* shims */
+  --ff-p-radius-none: var(--ff-primitives-radius-0);
+  --ff-p-radius-xs: var(--ff-primitives-radius-4);
+  --ff-p-radius-sm: var(--ff-primitives-radius-6);
+  --ff-p-radius-md: var(--ff-primitives-radius-8);
+  --ff-p-radius-lg: var(--ff-primitives-radius-10);
+  --ff-p-radius-xl: var(--ff-primitives-radius-12);
+  --ff-p-radius-2xl: var(--ff-primitives-radius-16);
+  --ff-p-radius-3xl: var(--ff-primitives-radius-20);
+  --ff-p-radius-4xl: var(--ff-primitives-radius-24);
+  --ff-p-radius-full: 9999px;
+  --ff-p-text-2xs: var(--ff-primitives-font-size-12);
+  --ff-p-text-xs: var(--ff-primitives-font-size-12);
+  --ff-p-text-sm: var(--ff-primitives-font-size-12);
+  --ff-p-text-base: var(--ff-primitives-font-size-13);
+  --ff-p-text-md: var(--ff-primitives-font-size-14);
+  --ff-p-text-lg: var(--ff-primitives-font-size-16);
+  --ff-p-text-xl: var(--ff-primitives-font-size-18);
+  --ff-p-text-2xl: var(--ff-primitives-font-size-20);
+  --ff-p-text-3xl: var(--ff-primitives-font-size-24);
+  --ff-p-text-4xl: var(--ff-primitives-font-size-28);
+  --ff-p-weight-regular: 400;
+  --ff-p-weight-medium: 500;
+  --ff-p-weight-semibold: 600;
+  --ff-p-weight-bold: 700;
+  --ff-p-leading-tight: 1.2;
+  --ff-p-leading-snug: 1.35;
+  --ff-p-leading-normal: 1.5;
+  --ff-p-space-1: var(--ff-primitives-space-2);
+  --ff-p-space-2: var(--ff-primitives-space-4);
+  --ff-p-space-3: var(--ff-primitives-space-6);
+  --ff-p-space-4: var(--ff-primitives-space-8);
+  --ff-p-space-5: var(--ff-primitives-space-12);
+  --ff-p-space-6: var(--ff-primitives-space-16);
+  --ff-p-space-8: var(--ff-primitives-space-24);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   LAYER 2 · ff_semantic — dark-first · PURE ALIASES a primitives
+   ─────────────────────────────────────────────────────────────────────────
+   ⚠ REGLA: ningún valor directo. Todo es var(--ff-primitives-*)
+   ───────────────────────────────────────────────────────────────────────── */
+:root {
+  /* surface */
+  --ff-semantic-surface-base: var(--ff-primitives-neutral-1);
+  --ff-semantic-surface-raised: var(--ff-primitives-neutral-3);
+  --ff-semantic-surface-sunken: var(--ff-primitives-neutral-0);
+  --ff-semantic-surface-hover: var(--ff-primitives-neutral-a-white-12);
+  --ff-semantic-surface-subtle: var(--ff-primitives-neutral-a-white-04);
+  --ff-semantic-surface-subtle-2: var(--ff-primitives-neutral-a-white-08);
+  --ff-semantic-surface-outstanding: var(--ff-primitives-neutral-a-white-20);
+  --ff-semantic-surface-ai: var(--ff-primitives-brand-a-6);
+  --ff-semantic-surface-transparent: var(--ff-primitives-neutral-a-transparent);
+
+  /* text */
+  --ff-semantic-text-primary: var(--ff-primitives-neutral-11);
+  --ff-semantic-text-secondary: var(--ff-primitives-neutral-a-text-60);
+  --ff-semantic-text-tertiary: var(--ff-primitives-neutral-a-white-40);
+  --ff-semantic-text-inverse: var(--ff-primitives-neutral-0);
+  --ff-semantic-text-brand: var(--ff-primitives-brand-4);
+  --ff-semantic-text-b: var(--ff-primitives-brand-b-4);
+  --ff-semantic-text-success: var(--ff-primitives-success-4);
+  --ff-semantic-text-warning: var(--ff-primitives-warning-4);
+  --ff-semantic-text-danger: var(--ff-primitives-danger-6);
+
+  /* border */
+  --ff-semantic-border-subtle: var(--ff-primitives-neutral-a-white-08);
+  --ff-semantic-border-default: var(--ff-primitives-neutral-a-white-12);
+  --ff-semantic-border-strong: var(--ff-primitives-neutral-a-white-20);
+  --ff-semantic-border-focus: var(--ff-primitives-brand-b-4);
+  --ff-semantic-border-brand: var(--ff-primitives-brand-a-40);
+  --ff-semantic-border-success: var(--ff-primitives-success-a-20);
+  --ff-semantic-border-warning: var(--ff-primitives-warning-a-20);
+  --ff-semantic-border-danger: var(--ff-primitives-danger-a-20);
+
+  /* accent */
+  --ff-semantic-accent-brand: var(--ff-primitives-brand-4);
+  --ff-semantic-accent-brand-hover: var(--ff-primitives-brand-5);
+  --ff-semantic-accent-brand-muted: var(--ff-primitives-brand-a-12);
+  --ff-semantic-accent-brand-bg: var(--ff-primitives-brand-a-6);
+  --ff-semantic-accent-b: var(--ff-primitives-brand-b-4);
+  --ff-semantic-accent-b-hover: var(--ff-primitives-brand-b-5);
+  --ff-semantic-accent-b-muted: var(--ff-primitives-brand-b-a-12);
+  --ff-semantic-accent-b-bg: var(--ff-primitives-brand-b-a-6);
+  --ff-semantic-accent-success: var(--ff-primitives-success-4);
+  --ff-semantic-accent-success-bg: var(--ff-primitives-success-a-12);
+  --ff-semantic-accent-success-border: var(--ff-primitives-success-a-20);
+  --ff-semantic-accent-warning: var(--ff-primitives-warning-4);
+  --ff-semantic-accent-warning-bg: var(--ff-primitives-warning-a-12);
+  --ff-semantic-accent-warning-border: var(--ff-primitives-warning-a-20);
+  --ff-semantic-accent-danger: var(--ff-primitives-danger-6);
+  --ff-semantic-accent-danger-bg: var(--ff-primitives-danger-a-12);
+  --ff-semantic-accent-danger-border: var(--ff-primitives-danger-a-20);
+
+  /* state */
+  --ff-semantic-state-focus: var(--ff-primitives-brand-b-4);
+  --ff-semantic-state-selected: var(--ff-primitives-brand-a-12);
+  --ff-semantic-state-disabled: var(--ff-primitives-neutral-a-text-20);
+
+  /* datavis */
+  --ff-semantic-dv-line-1: var(--ff-primitives-dv-line-1);
+  --ff-semantic-dv-line-2: var(--ff-primitives-dv-line-2);
+  --ff-semantic-dv-line-3: var(--ff-primitives-dv-line-3);
+  --ff-semantic-dv-line-4: var(--ff-primitives-dv-line-4);
+  --ff-semantic-dv-line-5: var(--ff-primitives-dv-line-5);
+  --ff-semantic-dv-line-6: var(--ff-primitives-dv-line-6);
+  --ff-semantic-dv-line-7: var(--ff-primitives-dv-line-7);
+  --ff-semantic-dv-line-8: var(--ff-primitives-dv-line-8);
+  --ff-semantic-dv-line-9: var(--ff-primitives-dv-line-9);
+  --ff-semantic-dv-line-10: var(--ff-primitives-dv-line-10);
+  --ff-semantic-dv-line-11: var(--ff-primitives-dv-line-11);
+  --ff-semantic-dv-line-12: var(--ff-primitives-dv-line-12);
+  --ff-semantic-dv-line-13: var(--ff-primitives-dv-line-13);
+  --ff-semantic-dv-heat-pos: var(--ff-primitives-dv-heat-pos-100);
+  --ff-semantic-dv-heat-neg: var(--ff-primitives-dv-heat-neg-100);
+  --ff-semantic-dv-heat-neu: var(--ff-primitives-dv-heat-neu-0);
+  --ff-semantic-dv-base: var(--ff-primitives-dv-heat-base);
+
+  /* icon/size */
+  --ff-semantic-icon-size-xs: var(--ff-primitives-icon-size-8);
+  --ff-semantic-icon-size-sm: var(--ff-primitives-icon-size-10);
+  --ff-semantic-icon-size-md: var(--ff-primitives-icon-size-12);
+  --ff-semantic-icon-size-lg: var(--ff-primitives-icon-size-14);
+  --ff-semantic-icon-size-xl: var(--ff-primitives-icon-size-16);
+  --ff-semantic-icon-stroke-xs: var(--ff-primitives-icon-stroke-bold);
+  --ff-semantic-icon-stroke-sm: var(--ff-primitives-icon-stroke-bold);
+  --ff-semantic-icon-stroke-md: var(--ff-primitives-icon-stroke-default);
+  --ff-semantic-icon-stroke-lg: var(--ff-primitives-icon-stroke-default);
+  --ff-semantic-icon-stroke-xl: var(--ff-primitives-icon-stroke-thin);
+
+  /* icon/color */
+  --ff-semantic-icon-primary: var(--ff-semantic-text-primary);
+  --ff-semantic-icon-secondary: var(--ff-semantic-text-secondary);
+  --ff-semantic-icon-tertiary: var(--ff-semantic-text-tertiary);
+  --ff-semantic-icon-disabled: var(--ff-semantic-state-disabled);
+  --ff-semantic-icon-brand: var(--ff-semantic-text-brand);
+  --ff-semantic-icon-ai: var(--ff-semantic-text-b);
+  --ff-semantic-icon-bull: var(--ff-semantic-text-success);
+  --ff-semantic-icon-bear: var(--ff-semantic-text-danger);
+  --ff-semantic-icon-warn: var(--ff-semantic-text-warning);
+  --ff-semantic-icon-inverse: var(--ff-semantic-text-inverse);
+}
+
+/* LIGHT MODE overrides — matched to Figma Essentials UI spec */
+[data-mode="light"] {
+  /* surfaces — Figma: FFFFFF@40%, FFFFFF@70%, 2D2D2D@4%/6%/12%/20% */
+  --ff-semantic-surface-base: var(--ff-primitives-neutral-12);
+  --ff-semantic-surface-raised: var(--ff-primitives-neutral-a-white-40);
+  --ff-semantic-surface-sunken: var(--ff-primitives-neutral-a-white-70);
+  --ff-semantic-surface-hover: var(--ff-primitives-neutral-a-grey-12);
+  --ff-semantic-surface-subtle: var(--ff-primitives-neutral-a-grey-04);
+  --ff-semantic-surface-subtle-2: var(--ff-primitives-neutral-a-grey-06);
+  --ff-semantic-surface-outstanding: var(--ff-primitives-neutral-a-grey-20);
+  --ff-semantic-surface-ai: var(--ff-primitives-brand-a-12);
+
+  /* text — Figma: #000000 / @60% / @40% */
+  --ff-semantic-text-primary: var(--ff-primitives-neutral-0);
+  --ff-semantic-text-secondary: var(--ff-primitives-neutral-a-black-60);
+  --ff-semantic-text-tertiary: var(--ff-primitives-neutral-a-black-40);
+  --ff-semantic-text-inverse: var(--ff-primitives-neutral-12);
+  --ff-semantic-text-brand: var(--ff-primitives-brand-2);
+  --ff-semantic-text-b: var(--ff-primitives-brand-b-2);
+  --ff-semantic-text-success: var(--ff-primitives-success-3);
+  --ff-semantic-text-warning: var(--ff-primitives-warning-3);
+  --ff-semantic-text-danger: var(--ff-primitives-danger-4);
+
+  /* borders */
+  --ff-semantic-border-subtle: var(--ff-primitives-neutral-a-grey-10);
+  --ff-semantic-border-default: var(--ff-primitives-neutral-a-grey-15);
+  --ff-semantic-border-strong: var(--ff-primitives-neutral-a-grey-25);
+
+  /* accents */
+  --ff-semantic-accent-brand: var(--ff-primitives-brand-2);
+  --ff-semantic-accent-brand-hover: var(--ff-primitives-brand-3);
+  --ff-semantic-accent-danger: var(--ff-primitives-danger-4);
+  --ff-semantic-accent-b: var(--ff-primitives-brand-b-2);
+  --ff-semantic-accent-b-hover: var(--ff-primitives-brand-b-3);
+  --ff-semantic-state-focus: var(--ff-primitives-brand-b-2);
+  --ff-semantic-state-disabled: var(--ff-primitives-neutral-a-black-25);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   BRIDGE · Legacy Flickflow tokens → ff_semantic
+   ─────────────────────────────────────────────────────────────────────────
+   ⚠ REGLA DE COLOR aplicada aquí:
+     bg-active         → neutral (no orange)
+     bg-ai             → teal sutil (gradient IA naranja→teal)
+     text-brand        → neutral off-white (no orange)
+     text-ai           → teal #4CC0CA (extremo teal del gradient IA)
+     text-info         → neutral (no blue)
+     border-focus      → neutral (no blue)
+     border-ai         → naranja sutil (extremo naranja del gradient IA)
+     brand-primary*    → neutral (no orange)
+     brand-ai*         → gradient naranja→teal (SOLO IA)
+     brand-secondary*  → neutral (no blue)
+     status-info*      → neutral (no blue)
+     accent-orange     → SOLO charts
+     accent-blue       → SOLO calendario económico
+   ───────────────────────────────────────────────────────────────────────── */
+:root {
+  /* Surfaces — with higher contrast steps */
+  --ff-bg-canvas: var(--ff-semantic-surface-base);
+  --ff-bg-base: var(--ff-semantic-surface-base);
+  --ff-bg-surface: var(--ff-semantic-surface-raised);
+  --ff-bg-elevated: var(--ff-primitives-neutral-4);
+  --ff-bg-overlay: var(--ff-semantic-surface-sunken);
+  --ff-bg-inset: var(--ff-semantic-surface-sunken);
+  --ff-bg-ghost: var(--ff-semantic-surface-subtle);
+  --ff-bg-active: var(--ff-primitives-neutral-a-white-08);
+  --ff-bg-ai: var(--ff-primitives-brand-a-6);
+
+  /* Text */
+  --ff-text-primary: var(--ff-semantic-text-primary);
+  --ff-text-secondary: var(--ff-semantic-text-secondary);
+  --ff-text-tertiary: var(--ff-semantic-text-tertiary);
+  --ff-text-disabled: var(--ff-semantic-state-disabled);
+  --ff-text-inverse: var(--ff-semantic-text-inverse);
+  --ff-text-brand: var(--ff-primitives-neutral-11);
+  --ff-text-ai: var(--ff-primitives-brand-4);
+  --ff-text-bull: var(--ff-semantic-text-success);
+  --ff-text-bear: var(--ff-semantic-text-danger);
+  --ff-text-warn: var(--ff-semantic-text-warning);
+  --ff-text-info: var(--ff-semantic-text-secondary);
+
+  /* Borders */
+  --ff-border-subtle: var(--ff-semantic-border-subtle);
+  --ff-border-default: var(--ff-semantic-border-default);
+  --ff-border-strong: var(--ff-semantic-border-strong);
+  --ff-border-focus: var(--ff-primitives-neutral-a-white-20);
+  --ff-border-bull: var(--ff-semantic-border-success);
+  --ff-border-bear: var(--ff-semantic-border-danger);
+  --ff-border-ai: var(--ff-primitives-brand-a-40);
+  --ff-border-warn: var(--ff-semantic-border-warning);
+
+  /* Brand — neutral interaction (no orange, no blue) */
+  --ff-brand-primary: var(--ff-primitives-neutral-11);
+  --ff-brand-primary-hover: var(--ff-primitives-neutral-12);
+  --ff-brand-primary-text: var(--ff-primitives-neutral-0);
+  --ff-brand-primary-active: var(--ff-primitives-neutral-a-white-12);
+  --ff-brand-primary-muted: var(--ff-primitives-neutral-a-white-08);
+  --ff-brand-secondary: var(--ff-semantic-text-secondary);
+  --ff-brand-secondary-muted: var(--ff-primitives-neutral-a-white-08);
+  /* AI brand — naranja (identidad IA = brand naranja) */
+  --ff-brand-ai: var(--ff-primitives-brand-4);
+  --ff-brand-ai-hover: var(--ff-primitives-brand-5);
+  --ff-brand-ai-active: var(--ff-primitives-brand-1);
+  --ff-brand-ai-muted: var(--ff-primitives-brand-a-12);
+
+  /* Status */
+  --ff-status-bull: var(--ff-semantic-accent-success);
+  --ff-status-bull-bg: var(--ff-semantic-accent-success-bg);
+  --ff-status-bull-border: var(--ff-semantic-accent-success-border);
+  --ff-status-bear: var(--ff-semantic-accent-danger);
+  --ff-status-bear-bg: var(--ff-semantic-accent-danger-bg);
+  --ff-status-bear-border: var(--ff-semantic-accent-danger-border);
+  --ff-status-neutral: var(--ff-semantic-text-tertiary);
+  --ff-status-neutral-bg: var(--ff-semantic-surface-subtle);
+  --ff-status-warn: var(--ff-semantic-accent-warning);
+  --ff-status-warn-bg: var(--ff-semantic-accent-warning-bg);
+  --ff-status-warn-border: var(--ff-semantic-accent-warning-border);
+  --ff-status-info: var(--ff-semantic-text-secondary);
+  --ff-status-info-bg: var(--ff-semantic-surface-subtle);
+  --ff-status-info-border: var(--ff-semantic-border-default);
+
+  /* Data-vis */
+  --ff-dv-1: var(--ff-semantic-dv-line-1);
+  --ff-dv-2: var(--ff-semantic-dv-line-2);
+  --ff-dv-3: var(--ff-semantic-dv-line-3);
+  --ff-dv-4: var(--ff-semantic-dv-line-4);
+  --ff-dv-5: var(--ff-semantic-dv-line-5);
+  --ff-dv-6: var(--ff-semantic-dv-line-6);
+  --ff-dv-7: var(--ff-semantic-dv-line-7);
+  --ff-dv-8: var(--ff-semantic-dv-line-8);
+  --ff-dv-9: var(--ff-semantic-dv-line-9);
+  --ff-dv-10: var(--ff-semantic-dv-line-10);
+  --ff-dv-11: var(--ff-semantic-dv-line-11);
+  --ff-dv-12: var(--ff-semantic-dv-line-12);
+  --ff-dv-13: var(--ff-semantic-dv-line-13);
+
+  /* Essentials UI */
+  --ff-ui-bg-base: var(--ff-semantic-surface-base);
+  --ff-ui-text-primary: var(--ff-semantic-text-primary);
+  --ff-ui-text-secondary: var(--ff-semantic-text-secondary);
+  --ff-ui-text-muted: var(--ff-semantic-text-tertiary);
+  --ff-ui-surface-1: var(--ff-semantic-surface-raised);
+  --ff-ui-surface-2: var(--ff-semantic-surface-sunken);
+  --ff-ui-surface-subtle-1: var(--ff-semantic-surface-subtle);
+  --ff-ui-surface-subtle-2: var(--ff-semantic-surface-subtle-2);
+  --ff-ui-surface-hover: var(--ff-semantic-surface-hover);
+  --ff-ui-element-outstanding: var(--ff-semantic-surface-outstanding);
+  --ff-ui-transparent: var(--ff-semantic-surface-transparent);
+
+  /* Accents directos · RESPETAR contextos: orange=charts · blue=calendar */
+  --ff-accent-orange: var(--ff-primitives-brand-4);
+  --ff-accent-orange-hover: var(--ff-primitives-brand-5);
+  --ff-accent-orange-6: var(--ff-primitives-brand-a-6);
+  --ff-accent-orange-12: var(--ff-primitives-brand-a-12);
+  --ff-accent-orange-40: var(--ff-primitives-brand-a-40);
+  --ff-accent-blue: var(--ff-primitives-brand-b-4);
+  --ff-accent-blue-hover: var(--ff-primitives-brand-b-5);
+  --ff-accent-blue-6: var(--ff-primitives-brand-b-a-6);
+  --ff-accent-blue-12: var(--ff-primitives-brand-b-a-12);
+  --ff-accent-blue-40: var(--ff-primitives-brand-b-a-40);
+
+  /* Alerts */
+  --ff-alert-positive: var(--ff-primitives-success-4);
+  --ff-alert-positive-20: var(--ff-primitives-success-a-20);
+  --ff-alert-negative: var(--ff-primitives-danger-6);
+  --ff-alert-negative-20: var(--ff-primitives-danger-a-20);
+  --ff-alert-warn: var(--ff-primitives-warning-4);
+  --ff-alert-warn-20: var(--ff-primitives-warning-a-20);
+
+  /* Charts/HeatMap */
+  --ff-chart-heat-pos-100: var(--ff-primitives-dv-heat-pos-100);
+  --ff-chart-heat-pos-75: var(--ff-primitives-dv-heat-pos-75);
+  --ff-chart-heat-pos-50: var(--ff-primitives-dv-heat-pos-50);
+  --ff-chart-heat-pos-25: var(--ff-primitives-dv-heat-pos-25);
+  --ff-chart-heat-neu-0: var(--ff-primitives-dv-heat-neu-0);
+  --ff-chart-heat-neg-25: var(--ff-primitives-dv-heat-neg-25);
+  --ff-chart-heat-neg-50: var(--ff-primitives-dv-heat-neg-50);
+  --ff-chart-heat-neg-75: var(--ff-primitives-dv-heat-neg-75);
+  --ff-chart-heat-neg-100: var(--ff-primitives-dv-heat-neg-100);
+  --ff-chart-heat-base: var(--ff-primitives-dv-heat-base);
+
+  /* Misc shims usados en componentes */
+  --ff-p-green-bull: var(--ff-primitives-success-4);
+  --ff-p-red-bear: var(--ff-primitives-danger-6);
+  --ff-p-amber-400: var(--ff-primitives-warning-4);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   BRIDGE · Light-mode overrides
+   Tokens del bridge layer que apuntan directamente a primitivas oscuras
+   (white-alpha) y necesitan override para light mode. Los tokens que ya
+   pasan por ff_semantic se actualizan automáticamente vía la cascada CSS.
+   ───────────────────────────────────────────────────────────────────────── */
+[data-mode="light"] {
+  /* ── Bridge overrides — ALL base UI tokens explicitly for light mode ──
+     Explicit overrides ensure light mode works even if var() cascade
+     doesn't propagate through @theme inline in Tailwind v4. ────────────── */
+
+  /* Surfaces — re-point through updated semantic values */
+  --ff-bg-canvas: var(--ff-semantic-surface-base);
+  --ff-bg-base: var(--ff-semantic-surface-base);
+  --ff-bg-surface: var(--ff-semantic-surface-raised);
+  --ff-bg-elevated: var(--ff-semantic-surface-raised);
+  --ff-bg-overlay: var(--ff-semantic-surface-sunken);
+  --ff-bg-inset: var(--ff-semantic-surface-sunken);
+  --ff-bg-ghost: var(--ff-semantic-surface-subtle);
+  --ff-bg-active: var(--ff-primitives-neutral-a-grey-12);
+  --ff-bg-ai: var(--ff-primitives-brand-a-12);
+
+  /* Text */
+  --ff-text-primary: var(--ff-semantic-text-primary);
+  --ff-text-secondary: var(--ff-semantic-text-secondary);
+  --ff-text-tertiary: var(--ff-semantic-text-tertiary);
+  --ff-text-disabled: var(--ff-semantic-state-disabled);
+  --ff-text-inverse: var(--ff-semantic-text-inverse);
+  --ff-text-brand: var(--ff-primitives-neutral-0);
+  --ff-text-ai: var(--ff-primitives-brand-2);
+  --ff-text-bull: var(--ff-semantic-text-success);
+  --ff-text-bear: var(--ff-semantic-text-danger);
+  --ff-text-warn: var(--ff-semantic-text-warning);
+  --ff-text-info: var(--ff-semantic-text-secondary);
+
+  /* Borders */
+  --ff-border-subtle: var(--ff-semantic-border-subtle);
+  --ff-border-default: var(--ff-semantic-border-default);
+  --ff-border-strong: var(--ff-semantic-border-strong);
+  --ff-border-focus: var(--ff-primitives-neutral-a-black-40);
+  --ff-border-bull: var(--ff-semantic-border-success);
+  --ff-border-bear: var(--ff-semantic-border-danger);
+  --ff-border-ai: var(--ff-primitives-brand-a-40);
+  --ff-border-warn: var(--ff-semantic-border-warning);
+
+  /* UI Essentials */
+  --ff-ui-bg-base: var(--ff-semantic-surface-base);
+  --ff-ui-text-primary: var(--ff-semantic-text-primary);
+  --ff-ui-text-secondary: var(--ff-semantic-text-secondary);
+  --ff-ui-text-muted: var(--ff-semantic-text-tertiary);
+  --ff-ui-surface-1: var(--ff-semantic-surface-raised);
+  --ff-ui-surface-2: var(--ff-semantic-surface-sunken);
+  --ff-ui-surface-subtle-1: var(--ff-semantic-surface-subtle);
+  --ff-ui-surface-subtle-2: var(--ff-semantic-surface-subtle-2);
+  --ff-ui-surface-hover: var(--ff-semantic-surface-hover);
+  --ff-ui-element-outstanding: var(--ff-semantic-surface-outstanding);
+
+  /* Brand primary buttons — direct primitive refs */
+  --ff-brand-primary: var(--ff-primitives-neutral-2);
+  --ff-brand-primary-hover: var(--ff-primitives-neutral-3);
+  --ff-brand-primary-text: var(--ff-primitives-neutral-12);
+  --ff-brand-primary-active: var(--ff-primitives-neutral-a-grey-15);
+  --ff-brand-primary-muted: var(--ff-primitives-neutral-a-grey-08);
+  --ff-brand-secondary-muted: var(--ff-primitives-neutral-a-grey-08);
+
+  /* Status — darker tones for light readability */
+  --ff-status-bull: var(--ff-primitives-success-3);
+  --ff-status-bear: var(--ff-primitives-danger-4);
+  --ff-status-warn: var(--ff-primitives-warning-3);
+
+  /* Accents */
+  --ff-accent-orange: var(--ff-primitives-brand-3);
+  --ff-accent-orange-hover: var(--ff-primitives-brand-5);
+  --ff-accent-blue: var(--ff-primitives-brand-b-3);
+
+  /* Chart HeatMap — paleta invertida para fondo claro */
+  --ff-chart-heat-pos-100: var(--ff-primitives-dv-heat-pos-100-light);
+  --ff-chart-heat-pos-75: var(--ff-primitives-dv-heat-pos-75-light);
+  --ff-chart-heat-pos-50: var(--ff-primitives-dv-heat-pos-50-light);
+  --ff-chart-heat-pos-25: var(--ff-primitives-dv-heat-pos-25-light);
+  --ff-chart-heat-neu-0: var(--ff-primitives-dv-heat-neu-light);
+  --ff-chart-heat-neg-25: var(--ff-primitives-dv-heat-neg-25-light);
+  --ff-chart-heat-neg-50: var(--ff-primitives-dv-heat-neg-50-light);
+  --ff-chart-heat-neg-75: var(--ff-primitives-dv-heat-neg-75-light);
+  --ff-chart-heat-neg-100: var(--ff-primitives-dv-heat-neg-100-light);
+  --ff-chart-heat-base: var(--ff-primitives-neutral-white);
+
+  /* Misc shims */
+  --ff-p-green-bull: var(--ff-primitives-success-3);
+  --ff-p-red-bear: var(--ff-primitives-danger-4);
+  --ff-p-amber-400: var(--ff-primitives-warning-3);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   AREA CONTEXT · Theming por área de contenido
+   ─────────────────────────────────────────────────────────────────────────
+   Los átomos y moléculas son NEUTROS por defecto. Al componer un organismo,
+   se envuelve en .ff-area-charts o .ff-area-calendar para que los tokens
+   --ff-area-* adquieran la identidad de color del área correspondiente.
+
+   Uso en organismos:
+     <div className="ff-area-charts">   → naranja (gráficas)
+       <FFPanel>…</FFPanel>
+     </div>
+     <div className="ff-area-calendar"> → azul/teal (calendario)
+       <FFEventRow>…</FFEventRow>
+     </div>
+
+   Sin clase de área → neutro (contenido general IA).
+   En el Creador de IA pueden convivir varios contextos en el mismo canvas.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Defaults — neutro (sin área específica) */
+:root {
+  --ff-area-accent: var(--ff-text-secondary);
+  --ff-area-accent-hover: var(--ff-text-primary);
+  --ff-area-accent-bg: var(--ff-bg-ghost);
+  --ff-area-accent-muted: var(--ff-bg-active);
+  --ff-area-accent-border: var(--ff-border-default);
+  --ff-area-accent-text: var(--ff-text-secondary);
+}
+
+/* Charts — naranja (brand) */
+.ff-area-charts {
+  --ff-area-accent: var(--ff-primitives-brand-4);
+  --ff-area-accent-hover: var(--ff-primitives-brand-5);
+  --ff-area-accent-bg: var(--ff-primitives-brand-a-6);
+  --ff-area-accent-muted: var(--ff-primitives-brand-a-12);
+  --ff-area-accent-border: var(--ff-primitives-brand-a-40);
+  --ff-area-accent-text: var(--ff-primitives-brand-4);
+}
+
+/* Calendar — azul/teal (brand-b) */
+.ff-area-calendar {
+  --ff-area-accent: var(--ff-primitives-brand-b-4);
+  --ff-area-accent-hover: var(--ff-primitives-brand-b-5);
+  --ff-area-accent-bg: var(--ff-primitives-brand-b-a-6);
+  --ff-area-accent-muted: var(--ff-primitives-brand-b-a-12);
+  --ff-area-accent-border: var(--ff-primitives-brand-b-a-12);
+  --ff-area-accent-text: var(--ff-primitives-brand-b-4);
+}
+
+/* Light-mode adjustments for area contexts */
+[data-mode="light"] .ff-area-charts {
+  --ff-area-accent: var(--ff-primitives-brand-3);
+  --ff-area-accent-hover: var(--ff-primitives-brand-4);
+  --ff-area-accent-text: var(--ff-primitives-brand-2);
+}
+[data-mode="light"] .ff-area-calendar {
+  --ff-area-accent: var(--ff-primitives-brand-b-3);
+  --ff-area-accent-hover: var(--ff-primitives-brand-b-4);
+  --ff-area-accent-text: var(--ff-primitives-brand-b-2);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   AI INSIGHT CARD · Animated gradient border
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Gradient border sweep — slow, subtle travel */
+@keyframes ff-ai-border-sweep {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+/* Sparkles icon — gentle breathe */
+@keyframes ff-ai-sparkle-pulse {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+.ff-ai-glow {
+  position: relative;
+}
+
+/* Thin animated gradient border — barely visible, elegant */
+.ff-ai-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--ff-primitives-brand-4) 25%,
+    var(--ff-primitives-brand-b-4) 50%,
+    var(--ff-primitives-brand-4) 75%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: ff-ai-border-sweep 4s linear infinite;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.45;
+  transition: opacity 1.5s ease-out;
+}
+
+/* After 3s → gradient fades to nothing */
+.ff-ai-glow--faded::before {
+  opacity: 0;
+}
+
+/* Persistent sparkle breathe */
+.ff-ai-sparkle-animated {
+  animation: ff-ai-sparkle-pulse 4s ease-in-out infinite;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   AREA GLOW — Animated accent border for charts & calendar organisms
+   Same pattern as AI glow: animated gradient border that fades after 3s.
+   Final state: neutral container with only internal accents visible.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.ff-area-glow {
+  position: relative;
+  border-radius: 24px;
+}
+
+.ff-area-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  padding: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--ff-area-accent) 25%,
+    var(--ff-area-accent-hover) 50%,
+    var(--ff-area-accent) 75%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: ff-ai-border-sweep 4s linear infinite;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.5;
+  transition: opacity 1.5s ease-out;
+}
+
+.ff-area-glow--faded::before {
+  opacity: 0;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   COMPOSITION GRID — 12-column dashboard layout
+   Industry-standard 12-column grid. Spans 1-12 + "full".
+   Allows 1/2/3/4/6/12 divisions for precise layout control.
+   The renderer sets --ff-comp-gap via inline style.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.ff-composition {
+  display: grid;
+  gap: var(--ff-comp-gap, 16px);
+  grid-template-columns: repeat(12, 1fr);
+  grid-auto-flow: row dense;
+  align-items: stretch;
+  width: 100%;
+  container-type: inline-size;
+}
+
+/* Composition item wrapper — organisms fill their grid cell completely.
+   container-type: inline-size enables @container queries inside organisms. */
+.ff-composition__item {
+  min-width: 0;
+  min-height: 128px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  container-type: inline-size;
+  overflow: hidden;
+}
+
+/* Organisms fill their grid cell — height 100% + flex:1 ensures full stretch */
+.ff-composition__item > * {
+  max-width: none !important;
+  flex: 1;
+  height: 100%;
+}
+
+/* ── Span classes (1-12 + full) ── */
+.ff-span-1 {
+  grid-column: span 1;
+}
+.ff-span-2 {
+  grid-column: span 2;
+}
+.ff-span-3 {
+  grid-column: span 3;
+}
+.ff-span-4 {
+  grid-column: span 4;
+}
+.ff-span-5 {
+  grid-column: span 5;
+}
+.ff-span-6 {
+  grid-column: span 6;
+}
+.ff-span-7 {
+  grid-column: span 7;
+}
+.ff-span-8 {
+  grid-column: span 8;
+}
+.ff-span-9 {
+  grid-column: span 9;
+}
+.ff-span-10 {
+  grid-column: span 10;
+}
+.ff-span-11 {
+  grid-column: span 11;
+}
+.ff-span-12 {
+  grid-column: span 12;
+}
+.ff-span-full {
+  grid-column: 1 / -1;
+}
+
+/* ── Responsive: tablet → 6 cols, mobile → 1 col ── */
+
+/* Tablet (736px - 1023px): collapse to 6-column grid */
+@container (min-width: 736px) and (max-width: 1023px) {
+  .ff-composition {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  /* Spans > 6 become full width */
+  .ff-span-7,
+  .ff-span-8,
+  .ff-span-9,
+  .ff-span-10,
+  .ff-span-11,
+  .ff-span-12,
+  .ff-span-full {
+    grid-column: 1 / -1 !important;
+  }
+}
+
+/* Mobile (< 736px): single column, all spans full width */
+@container (max-width: 735px) {
+  .ff-composition {
+    grid-template-columns: 1fr;
+  }
+  .ff-composition__item,
+  [class*="ff-span-"],
+  .ff-span-full {
+    grid-column: 1 / -1 !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   INNER GRID — 12-col system for childrenLayout grids inside organisms.
+   Uses same span classes. Prevents overflow of children.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.ff-inner-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--ff-inner-gap, 8px);
+  width: 100%;
+}
+
+.ff-inner-grid > * {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Children inside inner grid cells stretch to fill height */
+.ff-inner-grid > * > * {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+
+/* Inner grid collapse at narrow containers */
+@container (max-width: 500px) {
+  .ff-inner-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  .ff-inner-grid > .ff-span-7,
+  .ff-inner-grid > .ff-span-8,
+  .ff-inner-grid > .ff-span-9,
+  .ff-inner-grid > .ff-span-10,
+  .ff-inner-grid > .ff-span-11,
+  .ff-inner-grid > .ff-span-12,
+  .ff-inner-grid > .ff-span-full {
+    grid-column: 1 / -1 !important;
+  }
+}
+
+@container (max-width: 320px) {
+  .ff-inner-grid {
+    grid-template-columns: 1fr;
+  }
+  .ff-inner-grid > [class*="ff-span-"] {
+    grid-column: 1 / -1 !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   DEFENSIVE OVERFLOW — prevent content from breaking out of containers.
+   All flex/grid children get min-w-0 and word-break safety.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.ff-composition__item *,
+.ff-inner-grid * {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Children inside organism containers must not expand beyond parent */
+.ff-composition__item > * > * {
+  min-width: 0;
+}
+
+/* Inner-grid children overflow protection */
+.ff-inner-grid > * {
+  overflow: hidden;
+}
+
+/* Prevent long unbroken strings (hashes, URLs) from breaking layouts */
+.ff-composition__item [class*="tabular-nums"],
+.ff-composition__item [class*="font-mono"],
+.ff-inner-grid [class*="tabular-nums"],
+.ff-inner-grid [class*="font-mono"] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   CONTAINER-RESPONSIVE ATOMS — adapt to container width, not viewport.
+   Uses @container queries so components respond to their actual space.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* FFPriceRow: hide secondary columns when container is narrow */
+.ff-price-row__volume,
+.ff-price-row__marketcap {
+  display: none;
+}
+.ff-price-row__sparkline {
+  display: block;
+}
+
+/* Below 360px: hide sparkline too, only show core data */
+@container (max-width: 359px) {
+  .ff-price-row__sparkline {
+    display: none;
+  }
+}
+
+/* 500px+: show volume */
+@container (min-width: 500px) {
+  .ff-price-row__volume {
+    display: block;
+  }
+}
+
+/* 600px+: show market cap */
+@container (min-width: 600px) {
+  .ff-price-row__marketcap {
+    display: block;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   RATIONALE INFO BUTTON — "Why is this shown?" overlay on organisms
+   ───────────────────────────────────────────────────────────────────────── */
+
+.ff-rationale-wrap {
+  position: relative;
+}
+
+.ff-rationale-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 9999px;
+  border: none;
+  background: var(--ff-semantic-surface-subtle-2);
+  color: var(--ff-semantic-text-tertiary);
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity 0.2s ease,
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.ff-rationale-wrap:hover .ff-rationale-btn,
+.ff-rationale-btn:focus-visible,
+.ff-rationale-btn[data-state="open"] {
+  opacity: 1;
+}
+
+.ff-rationale-btn:hover {
+  background: var(--ff-semantic-surface-hover);
+  color: var(--ff-semantic-text-secondary);
+}
+
+.ff-rationale-popover {
+  max-width: 280px;
+  padding: 10px 12px;
+  border-radius: var(--ff-primitives-radius-10);
+  background: var(--ff-semantic-surface-raised);
+  border: 1px solid var(--ff-semantic-border-default);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   FLOATING SURFACES — backdrop-blur for overlays, dropdowns, popovers, etc.
+   Any element that floats over content must have blur for visual separation.
+   ───────────────────────────────────────────────────────────────────────── */
+[data-slot="popover-content"],
+[data-slot="dropdown-menu-content"],
+[data-slot="context-menu-content"],
+[data-slot="select-content"],
+[data-slot="menubar-content"],
+[data-slot="tooltip-content"],
+.ff-rationale-popover {
+  -webkit-backdrop-filter: blur(40px);
+  backdrop-filter: blur(40px);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   EDITABLE DASHBOARD — drag-to-reorder + snap-to-grid resize
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Grid column guides (background reference lines) */
+.ff-edit-grid-guides {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 16px;
+  position: absolute;
+  inset: 24px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ff-edit-grid-guide-col {
+  border-left: 1px dashed var(--ff-border-subtle);
+  border-right: 1px dashed var(--ff-border-subtle);
+  opacity: 0.5;
+  border-radius: 4px;
+}
+
+/* Edit mode composition grid — raise z-index above guides */
+.ff-composition.ff-edit-mode {
+  position: relative;
+  z-index: 1;
+}
+
+/* Each editable item */
+.ff-edit-item {
+  position: relative;
+  border-radius: 12px;
+  transition:
+    box-shadow 0.15s ease,
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+
+.ff-edit-item::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 13px;
+  border: 1.5px dashed var(--ff-border-default);
+  pointer-events: none;
+  opacity: 0.6;
+  transition:
+    border-color 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.ff-edit-item:hover::after {
+  border-color: var(--ff-text-ai);
+  opacity: 1;
+}
+
+.ff-edit-item--dragging {
+  opacity: 0.4;
+  transform: scale(0.98);
+}
+
+.ff-edit-item--drop-target::after {
+  border-color: var(--ff-text-ai) !important;
+  border-style: solid !important;
+  opacity: 1 !important;
+}
+
+.ff-edit-item--resizing::after {
+  border-color: var(--ff-status-bull) !important;
+  opacity: 1 !important;
+}
+
+/* Edit overlay — drag handle + span badge */
+.ff-edit-overlay {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.ff-edit-item:hover .ff-edit-overlay {
+  opacity: 1;
+}
+
+.ff-edit-drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: var(--ff-bg-elevated);
+  border: 1px solid var(--ff-border-default);
+  color: var(--ff-text-tertiary);
+  cursor: grab;
+  backdrop-filter: blur(8px);
+}
+
+.ff-edit-drag-handle:active {
+  cursor: grabbing;
+  color: var(--ff-text-primary);
+}
+
+.ff-edit-span-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 4px;
+  background: var(--ff-bg-elevated);
+  border: 1px solid var(--ff-border-default);
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--ff-text-secondary);
+  font-variant-numeric: tabular-nums;
+  backdrop-filter: blur(8px);
+}
+
+/* Resize handle (right edge) */
+.ff-edit-resize-handle {
+  position: absolute;
+  top: 0;
+  right: -4px;
+  bottom: 0;
+  width: 8px;
+  cursor: col-resize;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.ff-edit-item:hover .ff-edit-resize-handle {
+  opacity: 1;
+}
+
+.ff-edit-resize-grip {
+  width: 3px;
+  height: 32px;
+  border-radius: 2px;
+  background: var(--ff-text-ai);
+  opacity: 0.6;
+  transition:
+    opacity 0.15s ease,
+    height 0.15s ease;
+}
+
+.ff-edit-resize-handle:hover .ff-edit-resize-grip {
+  opacity: 1;
+  height: 48px;
+}
+
+/* Content wrapper */
+.ff-edit-content {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   PICK MODE — Click to select an organism
+   ───────────────────────────────────────────────────────────────────────── */
+
+.ff-pick-item {
+  position: relative;
+  cursor: crosshair;
+  border-radius: 12px;
+  transition: transform 0.15s ease;
+}
+
+.ff-pick-item::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border: 2px dashed transparent;
+  border-radius: 14px;
+  pointer-events: none;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+  z-index: 10;
+}
+
+.ff-pick-item:hover::after {
+  border-color: var(--ff-text-ai);
+  background: color-mix(in srgb, var(--ff-text-ai) 6%, transparent);
+}
+
+.ff-pick-overlay {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 20;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+}
+
+.ff-pick-item:hover .ff-pick-overlay {
+  opacity: 1;
+}
+
+.ff-pick-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--ff-bg-surface);
+  border: 1px solid var(--ff-text-ai);
+  color: var(--ff-text-ai);
+  font-size: 9px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   AI Animated Gradient Border
+   Rotating conic-gradient naranja→teal for AI-branded elements.
+   ───────────────────────────────────────────────────────────────────────── */
+
+@property --ff-ai-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes ff-ai-border-spin {
+  to {
+    --ff-ai-angle: 360deg;
+  }
+}
+
+.ff-ai-border {
+  position: relative;
+  border: none !important;
+  isolation: isolate;
+  z-index: 0;
+}
+
+.ff-ai-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--ff-ai-angle),
+    var(--ff-primitives-brand-5),
+    var(--ff-primitives-brand-b-4),
+    var(--ff-primitives-brand-4),
+    var(--ff-primitives-brand-b-5),
+    var(--ff-primitives-brand-5)
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  animation: ff-ai-border-spin 3s linear infinite;
+  z-index: -1;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   SPLIT LAYOUT — structural stretch rules.
+   Children of a split layout fill their cell both horizontally and vertically.
+   Charts and groups auto-stretch to match the tallest sibling.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.ff-split {
+  min-width: 0;
+  min-height: 0;
+}
+
+.ff-split > * {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.ff-split > * > * {
+  flex: 1;
+  min-height: 0;
+}
+
+.ff-chart-shell {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.ff-chart-body {
+  flex: 1;
+  min-height: 120px;
+  position: relative;
+}
+
+.ff-chart-body .recharts-responsive-container {
+  height: 100% !important;
+  min-height: 120px;
+}
+
+@container (max-width: 500px) {
+  .ff-split {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   RANGE SLIDER · ff-range  (Playground height control)
+   ───────────────────────────────────────────────────────────────────────── */
+input[type="range"].ff-range {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  outline: none;
+  border: none;
+  padding: 0;
+}
+
+input[type="range"].ff-range::-webkit-slider-runnable-track {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  border: none;
+}
+
+input[type="range"].ff-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--ff-range-accent, rgba(255, 255, 255, 0.5));
+  margin-top: -5px;
+  cursor: pointer;
+  border: none;
+}
+
+input[type="range"].ff-range::-moz-range-track {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  border: none;
+}
+
+input[type="range"].ff-range::-moz-range-thumb {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--ff-range-accent, rgba(255, 255, 255, 0.5));
+  border: none;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

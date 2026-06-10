@@ -1,0 +1,188 @@
+/* Flickflow AI — Tailwind bridge: maps --ff-* CSS vars to Tailwind utilities */
+
+/* ── AI page: blend platform sidebar with ambient background ── */
+[data-mode] > aside {
+  border-right-color: transparent !important;
+}
+
+/* Subtle fade for screen transitions */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Sidebar chat item — slide up when reordered */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   FLICKFLOW · Bridge ff-* tokens → Tailwind color utilities
+   ─────────────────────────────────────────────────────────────────────
+   @theme inline mapea cada token del bridge layer a un --color-ff-*
+   para que Tailwind genere bg-ff-*, text-ff-*, border-ff-*, etc.
+   El keyword `inline` preserva la cadena var() en runtime, lo que
+   permite que los overrides [data-mode="light"] en theme.css
+   propaguen correctamente sin recompilar.
+   ═══════════════════════════════════════════════════════════════════════ */
+@theme inline {
+  /* ── Surfaces / Backgrounds ─────────────────────────────────────────── */
+  --color-ff-bg-canvas: var(--ff-bg-canvas);
+  --color-ff-bg-base: var(--ff-bg-base);
+  --color-ff-bg-surface: var(--ff-bg-surface);
+  --color-ff-bg-elevated: var(--ff-bg-elevated);
+  --color-ff-bg-overlay: var(--ff-bg-overlay);
+  --color-ff-bg-inset: var(--ff-bg-inset);
+  --color-ff-bg-ghost: var(--ff-bg-ghost);
+  --color-ff-bg-active: var(--ff-bg-active);
+  --color-ff-bg-ai: var(--ff-bg-ai);
+
+  /* ── Text ────────────────────────────────────────────────────────────── */
+  --color-ff-text-primary: var(--ff-text-primary);
+  --color-ff-text-secondary: var(--ff-text-secondary);
+  --color-ff-text-tertiary: var(--ff-text-tertiary);
+  --color-ff-text-disabled: var(--ff-text-disabled);
+  --color-ff-text-inverse: var(--ff-text-inverse);
+  --color-ff-text-brand: var(--ff-text-brand);
+  --color-ff-text-ai: var(--ff-text-ai);
+  --color-ff-text-bull: var(--ff-text-bull);
+  --color-ff-text-bear: var(--ff-text-bear);
+  --color-ff-text-warn: var(--ff-text-warn);
+  --color-ff-text-info: var(--ff-text-info);
+
+  /* ── Borders ─────────────────────────────────────────────────────────── */
+  --color-ff-border-subtle: var(--ff-border-subtle);
+  --color-ff-border-default: var(--ff-border-default);
+  --color-ff-border-strong: var(--ff-border-strong);
+  --color-ff-border-focus: var(--ff-border-focus);
+  --color-ff-border-bull: var(--ff-border-bull);
+  --color-ff-border-bear: var(--ff-border-bear);
+  --color-ff-border-ai: var(--ff-border-ai);
+  --color-ff-border-warn: var(--ff-border-warn);
+
+  /* ── Brand (neutral interaction) ─────────────────────────────────────── */
+  --color-ff-brand-primary: var(--ff-brand-primary);
+  --color-ff-brand-primary-hover: var(--ff-brand-primary-hover);
+  --color-ff-brand-primary-text: var(--ff-brand-primary-text);
+  --color-ff-brand-primary-active: var(--ff-brand-primary-active);
+  --color-ff-brand-primary-muted: var(--ff-brand-primary-muted);
+  --color-ff-brand-secondary: var(--ff-brand-secondary);
+  --color-ff-brand-secondary-muted: var(--ff-brand-secondary-muted);
+  /* AI brand — gradient naranja→teal */
+  --color-ff-brand-ai: var(--ff-brand-ai);
+  --color-ff-brand-ai-hover: var(--ff-brand-ai-hover);
+  --color-ff-brand-ai-active: var(--ff-brand-ai-active);
+  --color-ff-brand-ai-muted: var(--ff-brand-ai-muted);
+
+  /* ── Status ──────────────────────────────────────────────────────────── */
+  --color-ff-status-bull: var(--ff-status-bull);
+  --color-ff-status-bull-bg: var(--ff-status-bull-bg);
+  --color-ff-status-bull-border: var(--ff-status-bull-border);
+  --color-ff-status-bear: var(--ff-status-bear);
+  --color-ff-status-bear-bg: var(--ff-status-bear-bg);
+  --color-ff-status-bear-border: var(--ff-status-bear-border);
+  --color-ff-status-neutral: var(--ff-status-neutral);
+  --color-ff-status-neutral-bg: var(--ff-status-neutral-bg);
+  --color-ff-status-warn: var(--ff-status-warn);
+  --color-ff-status-warn-bg: var(--ff-status-warn-bg);
+  --color-ff-status-warn-border: var(--ff-status-warn-border);
+  --color-ff-status-info: var(--ff-status-info);
+  --color-ff-status-info-bg: var(--ff-status-info-bg);
+  --color-ff-status-info-border: var(--ff-status-info-border);
+
+  /* ── Data-vis · Series lines (SOLO gráficas) ─────────────────────────── */
+  --color-ff-dv-1: var(--ff-dv-1);
+  --color-ff-dv-2: var(--ff-dv-2);
+  --color-ff-dv-3: var(--ff-dv-3);
+  --color-ff-dv-4: var(--ff-dv-4);
+  --color-ff-dv-5: var(--ff-dv-5);
+  --color-ff-dv-6: var(--ff-dv-6);
+  --color-ff-dv-7: var(--ff-dv-7);
+  --color-ff-dv-8: var(--ff-dv-8);
+  --color-ff-dv-9: var(--ff-dv-9);
+  --color-ff-dv-10: var(--ff-dv-10);
+  --color-ff-dv-11: var(--ff-dv-11);
+  --color-ff-dv-12: var(--ff-dv-12);
+  --color-ff-dv-13: var(--ff-dv-13);
+
+  /* ── Accents directos ────────────────────────────────────────────────── */
+  --color-ff-accent-orange: var(--ff-accent-orange);
+  --color-ff-accent-orange-hover: var(--ff-accent-orange-hover);
+  --color-ff-accent-orange-6: var(--ff-accent-orange-6);
+  --color-ff-accent-orange-12: var(--ff-accent-orange-12);
+  --color-ff-accent-orange-40: var(--ff-accent-orange-40);
+  --color-ff-accent-blue: var(--ff-accent-blue);
+  --color-ff-accent-blue-6: var(--ff-accent-blue-6);
+  --color-ff-accent-blue-12: var(--ff-accent-blue-12);
+
+  /* ── Alerts ──────────────────────────────────────────────────────────── */
+  --color-ff-alert-positive: var(--ff-alert-positive);
+  --color-ff-alert-positive-20: var(--ff-alert-positive-20);
+  --color-ff-alert-negative: var(--ff-alert-negative);
+  --color-ff-alert-negative-20: var(--ff-alert-negative-20);
+  --color-ff-alert-warn: var(--ff-alert-warn);
+  --color-ff-alert-warn-20: var(--ff-alert-warn-20);
+
+  /* ── Chart HeatMap ───────────────────────────────────────────────────── */
+  --color-ff-chart-heat-pos-100: var(--ff-chart-heat-pos-100);
+  --color-ff-chart-heat-pos-75: var(--ff-chart-heat-pos-75);
+  --color-ff-chart-heat-pos-50: var(--ff-chart-heat-pos-50);
+  --color-ff-chart-heat-pos-25: var(--ff-chart-heat-pos-25);
+  --color-ff-chart-heat-neu-0: var(--ff-chart-heat-neu-0);
+  --color-ff-chart-heat-neg-25: var(--ff-chart-heat-neg-25);
+  --color-ff-chart-heat-neg-50: var(--ff-chart-heat-neg-50);
+  --color-ff-chart-heat-neg-75: var(--ff-chart-heat-neg-75);
+  --color-ff-chart-heat-neg-100: var(--ff-chart-heat-neg-100);
+  --color-ff-chart-heat-base: var(--ff-chart-heat-base);
+
+  /* ── Icon colors ─────────────────────────────────────────────────────── */
+  --color-ff-icon-primary: var(--ff-semantic-icon-primary);
+  --color-ff-icon-secondary: var(--ff-semantic-icon-secondary);
+  --color-ff-icon-tertiary: var(--ff-semantic-icon-tertiary);
+  --color-ff-icon-disabled: var(--ff-semantic-icon-disabled);
+  --color-ff-icon-brand: var(--ff-semantic-icon-brand);
+  --color-ff-icon-ai: var(--ff-semantic-icon-ai);
+  --color-ff-icon-bull: var(--ff-semantic-icon-bull);
+  --color-ff-icon-bear: var(--ff-semantic-icon-bear);
+  --color-ff-icon-warn: var(--ff-semantic-icon-warn);
+  --color-ff-icon-inverse: var(--ff-semantic-icon-inverse);
+
+  /* ── UI Essentials ───────────────────────────────────────────────────── */
+  --color-ff-ui-bg-base: var(--ff-ui-bg-base);
+  --color-ff-ui-text-primary: var(--ff-ui-text-primary);
+  --color-ff-ui-text-secondary: var(--ff-ui-text-secondary);
+  --color-ff-ui-text-muted: var(--ff-ui-text-muted);
+  --color-ff-ui-surface-1: var(--ff-ui-surface-1);
+  --color-ff-ui-surface-2: var(--ff-ui-surface-2);
+  --color-ff-ui-surface-subtle-1: var(--ff-ui-surface-subtle-1);
+  --color-ff-ui-surface-subtle-2: var(--ff-ui-surface-subtle-2);
+  --color-ff-ui-surface-hover: var(--ff-ui-surface-hover);
+  --color-ff-ui-element-outstanding: var(--ff-ui-element-outstanding);
+  --color-ff-ui-transparent: var(--ff-ui-transparent);
+
+  /* ── Area Context · Theming por área de contenido ────────────────────
+     Neutro por defecto. .ff-area-charts → naranja · .ff-area-calendar → azul
+     Uso: text-ff-area-accent · bg-ff-area-accent-bg · border-ff-area-accent-border */
+  --color-ff-area-accent: var(--ff-area-accent);
+  --color-ff-area-accent-hover: var(--ff-area-accent-hover);
+  --color-ff-area-accent-bg: var(--ff-area-accent-bg);
+  --color-ff-area-accent-muted: var(--ff-area-accent-muted);
+  --color-ff-area-accent-border: var(--ff-area-accent-border);
+  --color-ff-area-accent-text: var(--ff-area-accent-text);
+
+  /* ── Misc shims ──────────────────────────────────────────────────────── */
+  --color-ff-p-green-bull: var(--ff-p-green-bull);
+  --color-ff-p-red-bear: var(--ff-p-red-bear);
+  --color-ff-p-amber-400: var(--ff-p-amber-400);
+}

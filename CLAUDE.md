@@ -9,12 +9,15 @@ El código que se genera aquí está pensado para ser **copy-paste directo** a l
 ## Cómo funciona
 
 - Es un proyecto **Vite + React 19 + Tailwind v4**, mismo stack visual que la app.
-- `app-src/` es un **symlink** → `../Flickflow App/flick-flow-next/src`.
-  Gracias a eso, el alias `@/*` apunta al `src/` real de la app y podemos importar
-  `@/design-system/icons`, `@/design-system/lib/helpers/icons` (createIcon), `cn`, etc.
-  **Si la app se mueve de carpeta, recrear el symlink** (`ln -sfn`).
-- Los tokens vienen de los CSS reales (`theme.css` + `tailwind-bridge.css`), importados en
-  `src/styles.css`. No duplicamos tokens: lo que cambie en la app se refleja aquí.
+- `app-src/` es un **snapshot vendorizado** del subconjunto del design system de la app
+  (tokens `theme.css` + `tailwind-bridge.css`, fuentes, `design-system/icons`, helper
+  `createIcon` y dependencias). El alias `@/*` apunta ahí, así que se importa
+  `@/design-system/icons`, `@/design-system/lib/helpers/icons`, etc.
+  - Se **versiona en el repo** (no es symlink) para que Vercel/cualquier clon compile sin
+    depender de la carpeta hermana "Flickflow App".
+  - Para **refrescarlo** desde la app local cuando cambie: `pnpm sync:ds`
+    (script `scripts/sync-design-system.sh`; ajustar la ruta `APP` si la app se mueve).
+- Los tokens vienen de esos CSS reales, importados en `src/styles.css`.
 - `~/*` apunta al código local del sandbox (`src/`).
 
 ## Galería de recursos
