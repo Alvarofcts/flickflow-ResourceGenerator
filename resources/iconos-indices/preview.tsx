@@ -5,6 +5,7 @@ import {
   Check,
   ChevronDown,
   Container,
+  Download,
   Factory,
   Fuel,
   type LucideIcon,
@@ -14,12 +15,13 @@ import {
   Wind,
 } from 'lucide-react'
 import { useMemo, useState } from 'react'
+import { downloadIconsZip, svgString } from '~/lib/iconExport'
 import type { ResourceMeta } from '~/registry'
 
 export const meta: ResourceMeta = {
   title: 'Iconos Índices',
   description:
-    'Sistema híbrido: el icono se deriva del valor. País→bandera, concepto→glifo (lucide), letras+color donde el tema se repite. Tamaños calcados del SDK real.',
+    'Sistema híbrido: el icono se deriva del valor. País→bandera, concepto→glifo (lucide), letras+color donde el tema se repite.',
   group: 'Iconos',
   status: 'review',
   surface: 'none',
@@ -81,8 +83,13 @@ function GlyphIcon({ Icon, s }: { Icon: LucideIcon; s: number }) {
   return <Icon strokeWidth={2} style={{ width: s, height: s, color: '#fff' }} />
 }
 
-function FlagSvg({ code }: { code: FlagCode }) {
-  const box = { width: '100%', height: '100%', viewBox: '0 0 24 24', preserveAspectRatio: 'xMidYMid slice' } as const
+function FlagSvg({ code, size }: { code: FlagCode; size?: number }) {
+  const box = {
+    width: size ?? '100%',
+    height: size ?? '100%',
+    viewBox: '0 0 24 24',
+    preserveAspectRatio: 'xMidYMid slice' as const,
+  }
   switch (code) {
     case 'de':
       return (
@@ -120,6 +127,8 @@ function FlagSvg({ code }: { code: FlagCode }) {
         <svg {...box}>
           <rect width="24" height="24" fill="#fff" />
           <circle cx="12" cy="12" r="6" fill="#BC002D" />
+          {/* outline sutil — define el círculo blanco tanto en dark como en light */}
+          <circle cx="12" cy="12" r="11.4" fill="none" stroke="rgba(128,128,128,0.4)" strokeWidth="0.9" />
         </svg>
       )
     case 'uk':
@@ -158,13 +167,12 @@ function MonoText({ text, size }: { text: string; size: number }) {
 }
 
 function IndexBadge({ item, size = 20 }: { item: IndexItem; size?: number }) {
-  const ring = 'inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 1px rgba(0,0,0,0.2)'
   const spec = item.icon
   if (spec.kind === 'flag') {
     return (
       <span
         className="relative inline-flex shrink-0 overflow-hidden rounded-full"
-        style={{ width: size, height: size, boxShadow: 'inset 0 0 0 1px rgba(0,0,0,0.25)' }}
+        style={{ width: size, height: size }}
       >
         <FlagSvg code={spec.flag} />
       </span>
@@ -173,7 +181,7 @@ function IndexBadge({ item, size = 20 }: { item: IndexItem; size?: number }) {
   return (
     <span
       className="relative inline-flex shrink-0 items-center justify-center rounded-full"
-      style={{ width: size, height: size, background: spec.color, boxShadow: ring }}
+      style={{ width: size, height: size, background: spec.color }}
     >
       {spec.kind === 'glyph' ? <GlyphIcon Icon={spec.Icon} s={size * 0.58} /> : <MonoText text={spec.mono} size={size} />}
     </span>
@@ -220,14 +228,88 @@ function ChartBackdrop() {
 }
 
 // ═════════════════════════════════════════════════════════════════════════
+// Export — SVG vectorial idéntico al badge (mismo color, glifo, stroke, forma)
+// ═════════════════════════════════════════════════════════════════════════
+const EXPORT_SIZE = 48
+
+function ExportBadgeSvg({ item, size }: { item: IndexItem; size: number }) {
+  const r = size / 2
+  const spec = item.icon
+
+  if (spec.kind === 'flag') {
+    return (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+        <defs>
+          <clipPath id="eclip">
+            <circle cx={r} cy={r} r={r} />
+          </clipPath>
+        </defs>
+        <g clipPath="url(#eclip)">
+          <FlagSvg code={spec.flag} size={size} />
+        </g>
+      </svg>
+    )
+  }
+
+  const g = size * 0.58
+  const Glyph = spec.kind === 'glyph' ? spec.Icon : null
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+      <circle cx={r} cy={r} r={r} fill={spec.color} />
+      {spec.kind === 'glyph' && Glyph ? (
+        <Glyph x={(size - g) / 2} y={(size - g) / 2} width={g} height={g} color="#fff" strokeWidth={2} />
+      ) : spec.kind === 'mono' ? (
+        <text
+          x={r}
+          y={r}
+          textAnchor="middle"
+          dominantBaseline="central"
+          fill="#fff"
+          fontFamily="Inter, Arial, sans-serif"
+          fontWeight={700}
+          fontSize={size * (spec.mono.length >= 3 ? 0.33 : spec.mono.length === 2 ? 0.4 : 0.46)}
+          letterSpacing="-0.02em"
+        >
+          {spec.mono}
+        </text>
+      ) : null}
+    </svg>
+  )
+}
+
+const exportIcons = () =>
+  INDICES.map((item) => ({ name: item.ticker, svg: svgString(<ExportBadgeSvg item={item} size={EXPORT_SIZE} />) }))
+
+// ═════════════════════════════════════════════════════════════════════════
 // Catálogo de iconos (retícula cuadrada)
 // ═════════════════════════════════════════════════════════════════════════
 function IconGrid() {
+  const [busy, setBusy] = useState(false)
+  const handleDownload = async () => {
+    setBusy(true)
+    try {
+      await downloadIconsZip({ zipName: 'flickflow-iconos-indices', icons: exportIcons() })
+    } finally {
+      setBusy(false)
+    }
+  }
+
   return (
     <div className="flickflow-sdk-root rounded-xl border border-white/[0.06] bg-navbar-bg p-6">
-      <div className="mb-5 flex items-baseline justify-between">
-        <h3 className="text-[14px] font-semibold text-text-primary">Catálogo de iconos</h3>
-        <span className="text-[11px] text-text-muted">{INDICES.length} índices</span>
+      <div className="mb-5 flex items-center justify-between">
+        <div className="flex items-baseline gap-2">
+          <h3 className="text-[14px] font-semibold text-text-primary">Catálogo de iconos</h3>
+          <span className="text-[11px] text-text-muted">{INDICES.length} índices</span>
+        </div>
+        <button
+          type="button"
+          onClick={handleDownload}
+          disabled={busy}
+          className="inline-flex items-center gap-1.5 rounded-lg border border-surface-subtle-2 px-2.5 py-1.5 text-[12px] font-medium text-text-secondary transition-colors hover:bg-surface-subtle-2 hover:text-text-primary disabled:opacity-50"
+        >
+          <Download className="h-3.5 w-3.5" strokeWidth={2} />
+          {busy ? 'Generando…' : 'Descargar'}
+        </button>
       </div>
       <div className="space-y-5">
         {GROUP_ORDER.map((g) => {

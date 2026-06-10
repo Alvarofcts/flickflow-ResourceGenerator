@@ -4,6 +4,7 @@ import {
   Candy,
   Coffee,
   Container,
+  Download,
   Droplet,
   Egg,
   Flame,
@@ -14,11 +15,12 @@ import {
   Wheat,
 } from 'lucide-react'
 import { useState } from 'react'
+import { downloadIconsZip, svgString } from '~/lib/iconExport'
 import { useMode } from '~/lib/useMode'
 import type { ResourceMeta } from '~/registry'
 
 export const meta: ResourceMeta = {
-  title: 'Commodities (desplegable)',
+  title: 'Iconos Commodities',
   description:
     'Port del desplegable de commodities hecho en Figma Make. Badge = color de la materia prima + glifo Lucide en tinte claro. Fiel a la estética original, dentro del sistema.',
   group: 'Iconos',
@@ -159,14 +161,55 @@ function CommodityDropdown({ lang, theme }: { lang: Lang; theme: 'light' | 'dark
 }
 
 // ═════════════════════════════════════════════════════════════════════════
+// Export — SVG vectorial idéntico al badge (color 0.8 + glifo lucide en tinte)
+// ═════════════════════════════════════════════════════════════════════════
+const EXPORT_SIZE = 48
+
+function commodityIconSvg(c: Commodity): string {
+  const Icon = c.icon
+  const g = EXPORT_SIZE * 0.6
+  const off = (EXPORT_SIZE - g) / 2
+  return svgString(
+    <svg xmlns="http://www.w3.org/2000/svg" width={EXPORT_SIZE} height={EXPORT_SIZE} viewBox={`0 0 ${EXPORT_SIZE} ${EXPORT_SIZE}`}>
+      <circle cx={EXPORT_SIZE / 2} cy={EXPORT_SIZE / 2} r={EXPORT_SIZE / 2} fill={c.color} fillOpacity={0.8} />
+      <Icon x={off} y={off} width={g} height={g} color={c.iconColor} strokeWidth={2} />
+    </svg>,
+  )
+}
+
+// ═════════════════════════════════════════════════════════════════════════
 // Catálogo de iconos (retícula cuadrada, como el de Índices)
 // ═════════════════════════════════════════════════════════════════════════
 function IconGrid({ lang }: { lang: Lang }) {
+  const [busy, setBusy] = useState(false)
+  const handleDownload = async () => {
+    setBusy(true)
+    try {
+      await downloadIconsZip({
+        zipName: 'flickflow-commodities',
+        icons: COMMODITIES.map((c) => ({ name: c.en, svg: commodityIconSvg(c) })),
+      })
+    } finally {
+      setBusy(false)
+    }
+  }
+
   return (
     <div className="flickflow-sdk-root rounded-xl border border-white/[0.06] bg-navbar-bg p-6">
-      <div className="mb-5 flex items-baseline justify-between">
-        <h3 className="text-[15px] font-semibold text-text-primary">Catálogo de iconos</h3>
-        <span className="text-[12px] text-text-muted">{COMMODITIES.length} materias primas</span>
+      <div className="mb-5 flex items-center justify-between">
+        <div className="flex items-baseline gap-2">
+          <h3 className="text-[15px] font-semibold text-text-primary">Catálogo de iconos</h3>
+          <span className="text-[12px] text-text-muted">{COMMODITIES.length} materias primas</span>
+        </div>
+        <button
+          type="button"
+          onClick={handleDownload}
+          disabled={busy}
+          className="inline-flex items-center gap-1.5 rounded-lg border border-surface-subtle-2 px-2.5 py-1.5 text-[12px] font-medium text-text-secondary transition-colors hover:bg-surface-subtle-2 hover:text-text-primary disabled:opacity-50"
+        >
+          <Download className="h-3.5 w-3.5" strokeWidth={2} />
+          {busy ? 'Generando…' : 'Descargar'}
+        </button>
       </div>
       <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6">
         {COMMODITIES.map((c) => (

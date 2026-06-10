@@ -1,84 +1,83 @@
 # Flickflow · Resource Generator
 
 Sandbox aislado para **diseñar y generar recursos de interfaz** (iconos, componentes,
-estados, layouts concretos) para la Flickflow App, viendo el resultado renderizado en vivo
-con los **tokens, fuentes y helpers reales** del design system de producción.
+menús, desplegables, layouts) para la **Flickflow App** y su **Chart Engine**, viéndolos
+renderizados en vivo con los **tokens, fuentes y helpers reales** de producción. El código
+generado está pensado para ser **copy-paste directo** a la app / al chart-sdk.
 
-El código que se genera aquí está pensado para ser **copy-paste directo** a la app.
+- **Repo:** `Alvarofcts/flickflow-ResourceGenerator` (push SIEMPRE con la cuenta **Alvarofcts**).
+- **Deploy:** https://flickflow-resource-generator.vercel.app (Vercel auto-deploya en cada push a `main`).
+- **Local:** `pnpm install && pnpm dev` → http://localhost:5273
 
-## Cómo funciona
+## Stack y arquitectura
 
-- Es un proyecto **Vite + React 19 + Tailwind v4**, mismo stack visual que la app.
-- `app-src/` es un **snapshot vendorizado** del subconjunto del design system de la app
-  (tokens `theme.css` + `tailwind-bridge.css`, fuentes, `design-system/icons`, helper
-  `createIcon` y dependencias). El alias `@/*` apunta ahí, así que se importa
-  `@/design-system/icons`, `@/design-system/lib/helpers/icons`, etc.
-  - Se **versiona en el repo** (no es symlink) para que Vercel/cualquier clon compile sin
-    depender de la carpeta hermana "Flickflow App".
-  - Para **refrescarlo** desde la app local cuando cambie: `pnpm sync:ds`
-    (script `scripts/sync-design-system.sh`; ajustar la ruta `APP` si la app se mueve).
-- Los tokens vienen de esos CSS reales, importados en `src/styles.css`.
-- `~/*` apunta al código local del sandbox (`src/`).
+- **Vite + React 19 + Tailwind v4** (mismo stack visual que la app).
+- `app-src/` = **snapshot vendorizado** del subconjunto del design system de la app
+  (tokens, fuentes, `design-system/icons`, helper `createIcon`). Alias `@/*` → `app-src`.
+  - Se **versiona en el repo** (NO es symlink) para que Vercel/cualquier clon compile.
+  - Refrescar desde la app local: `pnpm sync:ds` (`scripts/sync-design-system.sh`).
+- `~/*` → código local del sandbox (`src/`).
+- **Dos sistemas de tokens** importados en `src/styles.css`:
+  1. App (`ff-*`): `theme.css` + `tailwind-bridge.css` → utilidades `bg-ff-bg-surface`,
+     `text-ff-text-primary`, `text-ff-accent-orange`…
+  2. **Chart Engine SDK** (`src/sdk-theme.css`): tokens legacy (`surface-2`, `surface-subtle-1/2`,
+     `surface-hover`, `text-muted`, `accent-orange`, `navbar-bg`…) **escopados a
+     `.flickflow-sdk-root`**. Para reproducir menús/desplegables del chart con sus clases y
+     valores EXACTOS, envolver el recurso en `<div class="flickflow-sdk-root">`.
+
+## Dónde están los componentes reales (para clavar el contexto)
+
+- App Next: `/Users/alvarorodriguezvigil/Freelance/Unfiltrade/Flickflow/Flickflow App/flick-flow-next`
+  (design-system en `src/design-system`, tokens en `src/modules/ai/styles/`).
+- Chart Engine (fuente del desplegable de índices/assets): `…/Flickflow/Chart Engine Dashboard/flick-flow-charts-v2`
+  → `packages/chart-sdk/src` (`CustomSelect.tsx`, `AssetLogo.tsx`, `styles.css` con los tokens del SDK).
 
 ## Galería de recursos
 
-Cada recurso vive en `resources/<nombre>/preview.tsx` y se descubre **automáticamente**
-(no hay que registrar nada). Dentro de su carpeta trabajamos libre (subcomponentes, datos
-mock, variantes…).
+Cada recurso vive en `resources/<nombre>/preview.tsx` y se **autodescubre** (`src/registry.ts`,
+`import.meta.glob`). El home (`src/App.tsx`) es una **retícula** de proyectos con thumbnail en vivo;
+al entrar, un lienzo de trabajo. `preview.tsx` exporta:
+- `default` → componente React del recurso.
+- `meta: ResourceMeta` → `title`, `description` (solo contexto de qué es, NO notas internas),
+  `group`, `status` (`wip|review|done`), `surface` (`base|card|none`).
 
-`preview.tsx` debe:
-- `export default` un componente React que renderiza el recurso.
-- (opcional) `export const meta: ResourceMeta` con `title`, `description`, `group`,
-  `status` (`wip|review|done`), `surface` (`base|card|none`).
+**Dark/Light:** el switch de la TopBar pone `data-mode` en `<html>`. Los tokens `ff-*` y los del
+SDK flipan solos. Para colores en JS, leer el modo con `useMode()` (`~/lib/useMode`).
 
-Toggle Dark/Light en la cabecera (cambia `data-mode` en `<html>`, como la app).
+## Iconos — REGLAS
 
-```
-pnpm install
-pnpm dev        # http://localhost:5273
-```
+- **Usar SIEMPRE `lucide-react`** para los iconos (es la librería por defecto de la app).
+  Excepción: **banderas de países** (no existen en lucide) → SVG propio.
+- Para iconos propios de la app se puede usar `createIcon(name, iconNode, {viewBox, defaultSize})`
+  de `@/design-system/lib/helpers/icons` (formato `[tag, attrs, children?]`, stroke 1.5).
 
-## Reglas del design system (resumen — la fuente real es theme.css)
+### Export de iconos (`src/lib/iconExport.ts`)
 
-Arquitectura de tokens `ff/{layer}/{token}` en 3 capas: primitives → semantic → component.
-Ningún token fuera de primitives lleva valor directo.
+Botón "Descargar" arriba a la derecha del catálogo → zip con carpetas **`SVG/`** y **`PNG/`**.
+Clave: el export NO es captura; se **reconstruye cada icono como SVG vectorial** con los MISMOS
+parámetros del badge en pantalla (color, glifo lucide, `strokeWidth`, forma/bandera/texto) vía
+`renderToStaticMarkup`; el PNG se rasteriza de ese SVG. Cada proyecto define su `ExportBadgeSvg`
+espejo del badge. Iconos planos (sin sombras).
 
-**Color (regla dura):**
-- 🟠 Naranja (`--ff-accent-orange`) → **SOLO** áreas de gráficas.
-- 🔵 Azul (`--ff-accent-blue`) → **SOLO** calendario económico.
-- ✨ AI → gradiente naranja→teal (`--ff-brand-ai*`).
-- Interacción UI (botones primarios, nav activa, CTAs) → **neutral** (`--ff-brand-primary`).
-- Δ positivo/negativo → verde/rojo (`--ff-status-bull` / `--ff-status-bear`).
-- Series de chart → `--ff-dv-1 … --ff-dv-13`.
-- **Dark-first.** Default = dark; light solo bajo `[data-mode="light"]`.
+## Proyectos actuales
 
-**Utilidades Tailwind:** el bridge mapea cada token a `--color-ff-*`, así que se usan como
-`bg-ff-bg-surface`, `text-ff-text-primary`, `border-ff-border-subtle`, `text-ff-accent-orange`…
+- **Iconos Índices** (`resources/iconos-indices`): selector de índices en el desplegable REAL del
+  chart (chrome con tokens del SDK + catálogo). Sistema **híbrido** (el icono se deriva del valor):
+  país → bandera · EE.UU. (SPX/NQ/DJI, mismo país ×3) → letras con color de marca (S&P rojo,
+  Nasdaq azul, Dow azul marino) · materias primas/transporte → glifo lucide + color de categoría
+  (bronce/teal) · energía → glifo (Atom/Sun/Wind). Japón lleva outline gris sutil para light.
+- **Iconos Commodities** (`resources/commodities`): port del Figma Make
+  (`~/Downloads/Crear desplegable de commodities`). Badge = color de la materia prima (0.8) + glifo
+  lucide en tinte claro. Lista "Todas"+reset, bilingüe es/en, dark/light.
 
-**Tipografía:** Safiro (brand/display), Inter (UI), JetBrains Mono (datos/código).
-Pesos: 400 / 500 / 600.
+## Componentes (cuando toque)
 
-## Iconos
+- Variantes con `cva` (import `'cva'`), clases con `cn` (`@/design-system/lib/helpers/cn`),
+  `Slot` para `asChild`. Atomic design en `@/design-system/components`.
 
-- Se generan con `createIcon(name, iconNode, { viewBox, defaultSize })` de
-  `@/design-system/lib/helpers/icons`.
-- `iconNode` = array de `[tag, attrs, children?]`. `stroke="currentColor"`, grosor `1.5`.
-- viewBox típico `0 0 18 18` (o `0 0 24 24`). El color sale de `currentColor`.
-- Convención de nombres: `Icon{Nombre}{Filled|Outlined}` (PascalCase).
-- Catálogo actual + plantilla: ver recursos **Design system (referencia)** y **Ejemplo · icono nuevo**.
-- Al aprobar un icono, su bloque `createIcon(...)` se copia a
-  `app-src/design-system/icons/index.tsx` en la app.
+## Flujo típico
 
-## Componentes
-
-- Variantes con `cva` (import desde `'cva'`, alias a class-variance-authority).
-- Clases con `cn` desde `@/design-system/lib/helpers/cn`.
-- `Slot` para `asChild`. Atomic design: atoms / molecules / organisms / templates en
-  `@/design-system/components`.
-
-## Flujo de trabajo típico
-
-1. Encargo: "iconos para un desplegable de X" / "diseño del componente Y".
-2. Crear `resources/<encargo>/preview.tsx`, generar el recurso usando helpers/tokens reales.
-3. Iterar en vivo en la galería (variantes, tamaños, estados, dark/light).
-4. Al aprobar, mover el código a su sitio en la app (`app-src/...`).
+1. Encargo ("iconos para X", "diseño del componente Y").
+2. `resources/<encargo>/preview.tsx` con helpers/tokens reales + chrome real si es un componente del producto.
+3. Iterar en la galería (tamaños, estados, dark/light).
+4. Al aprobar, copiar el código a su sitio en la app / chart-sdk.
