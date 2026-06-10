@@ -1,0 +1,123 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   Chart Engine SDK · tokens reales (copiados de
+   Chart Engine Dashboard/.../packages/chart-sdk/src/styles.css)
+
+   Reproducen los tokens legacy que usan los componentes del SDK
+   (surface-2, surface-subtle-1/2, surface-hover, text-muted, accent-orange…),
+   escopados a .flickflow-sdk-root para clavar menús/desplegables del chart.
+   Envolver el preview en <div class="flickflow-sdk-root dark"> para usarlos.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Token name declarations → Tailwind genera bg-surface-2, text-text-muted, etc.
+   Los valores resuelven desde los bloques .flickflow-sdk-root de abajo. */
+@theme {
+  --color-color-base: var(--color-color-base);
+  --color-navbar-bg: var(--color-navbar-bg);
+
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-muted: var(--color-text-muted);
+  --color-text-white: var(--color-text-white);
+
+  --color-surface-1: var(--color-surface-1);
+  --color-surface-2: var(--color-surface-2);
+  --color-surface-subtle-1: var(--color-surface-subtle-1);
+  --color-surface-subtle-2: var(--color-surface-subtle-2);
+  --color-surface-hover: var(--color-surface-hover);
+  --color-element-outstanding: var(--color-element-outstanding);
+
+  --color-accent-orange: var(--color-accent-orange);
+  --color-accent-orange-light: var(--color-accent-orange-light);
+  --color-accent-orange-translucent: var(--color-accent-orange-translucent);
+  --color-accent-orange-6: var(--color-accent-orange-6);
+  --color-accent-orange-12: var(--color-accent-orange-12);
+  --color-accent-orange-40: var(--color-accent-orange-40);
+  --color-accent-orange-hover: var(--color-accent-orange-hover);
+
+  --color-accent-green: var(--color-accent-green);
+  --color-accent-blue: var(--color-accent-blue);
+  --color-positive: var(--color-positive);
+  --color-negative: var(--color-negative);
+  --color-alert: var(--color-alert);
+}
+
+/* Dark theme (default del SDK). */
+.flickflow-sdk-root,
+.flickflow-sdk-root.dark {
+  --color-color-base: #1f1f1f;
+  --color-navbar-bg: #141414;
+  --color-text-primary: #e4e1de;
+  --color-text-secondary: rgba(228, 225, 222, 0.6);
+  --color-text-muted: rgba(228, 225, 222, 0.4);
+  --color-text-white: #ffffff;
+  --color-surface-1: rgba(31, 31, 31, 0.4);
+  --color-surface-2: rgba(31, 31, 31, 0.7);
+  --color-surface-subtle-1: rgba(255, 255, 255, 0.04);
+  --color-surface-subtle-2: rgba(255, 255, 255, 0.06);
+  --color-surface-hover: rgba(255, 255, 255, 0.12);
+  --color-element-outstanding: rgba(255, 255, 255, 0.2);
+  --color-accent-orange: #e06b37;
+  --color-accent-orange-light: #f4763f;
+  --color-accent-orange-translucent: #f4763f1f;
+  --color-accent-orange-6: rgba(244, 118, 63, 0.06);
+  --color-accent-orange-12: rgba(244, 118, 63, 0.12);
+  --color-accent-orange-40: rgba(244, 118, 63, 0.4);
+  --color-accent-orange-hover: #f4763f;
+  --color-accent-green: #00982b;
+  --color-accent-blue: #53b5be;
+  --color-positive: #4caf50;
+  --color-negative: #e11c26;
+  --color-alert: #ffc107;
+}
+
+/* Sigue el toggle dark/light del sandbox (data-mode en <html>), además del
+   modificador explícito .light. Mayor especificidad → gana sobre el dark base. */
+.flickflow-sdk-root.light,
+[data-mode="light"] .flickflow-sdk-root:not(.dark) {
+  --color-color-base: #f4f4f4;
+  --color-navbar-bg: #f4f4f4;
+  --color-text-primary: #000000;
+  --color-text-secondary: rgba(0, 0, 0, 0.6);
+  --color-text-muted: rgba(0, 0, 0, 0.4);
+  --color-text-white: #ffffff;
+  --color-surface-1: rgba(255, 255, 255, 0.4);
+  --color-surface-2: rgba(255, 255, 255, 0.7);
+  --color-surface-subtle-1: rgba(45, 45, 45, 0.04);
+  --color-surface-subtle-2: rgba(45, 45, 45, 0.06);
+  --color-surface-hover: rgba(45, 45, 45, 0.12);
+  --color-element-outstanding: rgba(45, 45, 45, 0.2);
+  --color-accent-orange: #e06b37;
+  --color-accent-orange-light: #f4763f;
+  --color-accent-orange-translucent: rgba(224, 107, 55, 0.12);
+  --color-accent-orange-6: rgba(230, 69, 0, 0.06);
+  --color-accent-orange-12: rgba(230, 69, 0, 0.16);
+  --color-accent-orange-40: rgba(224, 107, 55, 0.4);
+  --color-accent-orange-hover: #ff8b58;
+  --color-accent-green: #00982b;
+  --color-accent-blue: #53b5be;
+  --color-positive: #54cb76;
+  --color-negative: #e11c26;
+  --color-alert: #fdc700;
+}
+
+/* Reset escopado del SDK (font Inter + scrollbar fino). */
+.flickflow-sdk-root {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--color-text-primary);
+}
+.flickflow-sdk-root *::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.flickflow-sdk-root *::-webkit-scrollbar-track {
+  background: transparent;
+}
+.flickflow-sdk-root *::-webkit-scrollbar-thumb {
+  background-color: var(--color-surface-subtle-2);
+  border-radius: 4px;
+}
+.flickflow-sdk-root *::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-surface-hover);
+}

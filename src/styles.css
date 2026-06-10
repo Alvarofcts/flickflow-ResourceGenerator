@@ -1,0 +1,51 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   Resource Generator · global styles
+   Reuses the REAL Flickflow design tokens via the app-src symlink, so every
+   resource previewed here matches the production app exactly.
+   ───────────────────────────────────────────────────────────────────────── */
+@import "tailwindcss";
+
+/* Flickflow tokens + Tailwind bridge (the actual files from the app) */
+@import "../app-src/modules/ai/styles/theme.css";
+@import "../app-src/modules/ai/styles/tailwind-bridge.css";
+
+/* Chart Engine SDK tokens (para reproducir menús/desplegables del chart) */
+@import "./sdk-theme.css";
+
+/* Brand fonts — same woff2 the app ships */
+@font-face {
+  font-family: "Safiro";
+  src: url("../app-src/app/fonts/Safiro-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Safiro";
+  src: url("../app-src/app/fonts/Safiro-Semibold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("../app-src/app/fonts/Inter-VariableFont_opsz,wght.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ff-bg-base, #0d0d0d);
+  color: var(--ff-text-primary, #f4f4f4);
+  font-family: var(--ff-primitives-type-family-sans, "Inter", system-ui, sans-serif);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}

@@ -1,0 +1,32 @@
+{
+  "name": "flickflow-resource-generator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
+  },
+  "scripts": {
+    "dev": "vite --port 5273",
+    "build": "vite build",
+    "preview": "vite preview --port 5273"
+  },
+  "dependencies": {
+    "clsx": "2.1.1",
+    "cva": "npm:class-variance-authority@0.7.1",
+    "lucide-react": "1.6.0",
+    "motion": "12.38.0",
+    "react": "19.2.5",
+    "react-dom": "19.2.5",
+    "tailwind-merge": "3.5.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "4.1.18",
+    "@types/react": "19.2.10",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "5.1.0",
+    "tailwindcss": "4.1.18",
+    "typescript": "5.9.3",
+    "vite": "6.3.6"
+  }
+}
